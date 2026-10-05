@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RING — Discover. Connect. Buy Local.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ring-bg:#F6F6F7; --ring-surface:#FFFFFF;
+  --ring-text:#0F0F10; --ring-muted:#6B6B70;
+  --ring-border:#E7E7EA;
+  --ring-accent:#E63946; --ring-accent-dk:#C92A37;
+  --ring-ok:#0a7c42; --ring-err:#b3261e; --ring-off:#8A8A90;
+  --whatsapp:#25D366; --whatsapp-dk:#1DA851;
+  --radius:14px; --radius-lg:20px;
+  --shadow-1:0 1px 2px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.06);
+  --shadow-2:0 8px 24px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--ring-bg); color:var(--ring-text);
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+  padding-bottom:88px;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.hidden{display:none !important}
+
+/* topbar */
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 16px;background:var(--ring-surface);
+  border-bottom:1px solid var(--ring-border);
+}
+.brand{font-weight:800;letter-spacing:.5px;font-size:1rem}
+.topbar__right{display:flex;align-items:center;gap:8px}
+.icon-btn{
+  width:38px;height:38px;border:0;border-radius:10px;background:transparent;
+  display:grid;place-items:center;cursor:pointer;position:relative;
+  color:var(--ring-text);
+}
+.icon-btn:hover{background:var(--ring-bg)}
+.icon-btn svg{width:20px;height:20px}
+.cart-badge{
+  position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;
+  background:var(--ring-accent);color:#fff;border-radius:99px;
+  font-size:10px;font-weight:700;display:grid;place-items:center;
+  border:2px solid var(--ring-surface);
+}
+
+/* page */
+.page{padding:16px;max-width:960px;margin:0 auto}
+.page-title{font-size:1.5rem;margin:8px 0 16px;font-weight:800;letter-spacing:-.02em}
+.section{margin:28px 0}
+.section__title{font-size:1.05rem;font-weight:800;margin:0 0 14px;letter-spacing:-.01em}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 12px}
+.row-between .section__title{margin:0}
+
+/* hero */
+.hero{padding:24px 0 20px}
+.hero__title{font-size:clamp(1.6rem,4.5vw,2.2rem);font-weight:800;letter-spacing:-.015em;margin:0 0 8px;line-height:1.15}
+.hero__sub{color:var(--ring-muted);font-size:.95rem;line-height:1.5;margin:0 0 20px;max-width:46ch}
+.hero__search{display:flex;gap:8px;background:var(--ring-surface);border:1px solid var(--ring-border);padding:6px;border-radius:999px;box-shadow:var(--shadow-1)}
+.hero__search input{flex:1;border:0;background:transparent;padding:10px 14px;font-size:.95rem;outline:0}
+
+/* chips */
+.chip-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;margin-bottom:12px}
+.chip-bar::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;padding:8px 14px;background:var(--ring-surface);
+  border:1px solid var(--ring-border);border-radius:999px;
+  font-size:.85rem;font-weight:600;cursor:pointer;
+}
+.chip--active{background:var(--ring-text);color:#fff;border-color:var(--ring-text)}
+
+/* grids */
+.store-grid{display:grid;gap:10px;grid-template-columns:1fr}
+.product-grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:560px){
+  .store-grid{grid-template-columns:1fr 1fr}
+  .product-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:900px){
+  .store-grid{grid-template-columns:repeat(3,1fr)}
+  .product-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* store card */
+.store-card-sm{
+  display:flex;align-items:center;gap:12px;padding:12px;
+  background:var(--ring-surface);border:1px solid var(--ring-border);
+  border-radius:var(--radius);box-shadow:var(--shadow-1);cursor:pointer;
+  transition:transform .08s;
+}
+.store-card-sm:hover{transform:translateY(-1px)}
+.store-card-sm__logo{
+  width:48px;height:48px;border-radius:12px;background:var(--ring-bg);
+  overflow:hidden;flex-shrink:0;display:grid;place-items:center;
+  font-weight:800;color:var(--ring-muted);
+}
+.store-card-sm__logo img{width:100%;height:100%;object-fit:cover}
+.store-card-sm__body{min-width:0;flex:1}
+.store-card-sm__name{margin:0 0 2px;font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.store-card-sm__meta{margin:0;font-size:.8rem;color:var(--ring-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* product card */
+.product-card-b{
+  display:block;background:var(--ring-surface);border:1px solid var(--ring-border);
+  border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-1);
+  transition:transform .08s;cursor:pointer;
+}
+.product-card-b:hover{transform:translateY(-2px)}
+.product-card-b__img{aspect-ratio:1;background:var(--ring-bg);display:grid;place-items:center;overflow:hidden}
+.product-card-b__img img{width:100%;height:100%;object-fit:cover}
+.product-card-b__ph{font-size:2rem;color:var(--ring-muted)}
+.product-card-b__body{padding:10px 12px 12px}
+.product-card-b__title{margin:0 0 2px;font-size:.9rem;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-card-b__vendor{margin:0 0 6px;font-size:.75rem;color:var(--ring-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-card-b__price{margin:0;font-weight:800;font-size:.95rem}
+.product-card-b__unavail{
+  position:absolute;top:8px;right:8px;background:rgba(15,15,16,.75);color:#fff;
+  font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:99px;
+}
+
+/* search row */
+.search-row{background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:999px;padding:4px 4px 4px 16px;margin-bottom:14px;display:flex;align-items:center}
+.search-row input{flex:1;border:0;background:transparent;padding:10px 0;outline:0}
+
+/* empty */
+.empty{text-align:center;padding:40px 20px;background:var(--ring-surface);border:1px dashed var(--ring-border);border-radius:var(--radius)}
+.empty p{margin:0 0 14px;color:var(--ring-muted)}
+
+/* store header */
+.store-header{display:flex;gap:16px;padding:20px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);margin-bottom:24px;box-shadow:var(--shadow-1)}
+.store-header__logo{width:72px;height:72px;border-radius:16px;background:var(--ring-bg);overflow:hidden;flex-shrink:0;display:grid;place-items:center;font-size:1.8rem;font-weight:800;color:var(--ring-muted)}
+.store-header__logo img{width:100%;height:100%;object-fit:cover}
+.store-header__body{min-width:0;flex:1}
+.store-header__name{margin:0 0 4px;font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
+.store-header__meta{margin:0 0 8px;font-size:.82rem;color:var(--ring-muted)}
+.store-header__desc{margin:0 0 12px;font-size:.88rem;line-height:1.5}
+
+/* product detail */
+.product-hero{aspect-ratio:1;max-height:480px;background:var(--ring-bg);border-radius:var(--radius);overflow:hidden;display:grid;place-items:center;margin-bottom:20px}
+.product-hero img{width:100%;height:100%;object-fit:cover}
+.product-hero__ph{font-size:4rem;color:var(--ring-muted)}
+.product-cat{margin:0 0 6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ring-muted)}
+.product-title{margin:0 0 8px;font-size:1.4rem;font-weight:800;line-height:1.2}
+.product-price{margin:0 0 16px;font-size:1.4rem;font-weight:800;color:var(--ring-accent)}
+.product-desc{margin:0 0 12px;font-size:.95rem;line-height:1.55;white-space:pre-wrap}
+.product-meta{margin:0 0 20px;font-size:.8rem;color:var(--ring-muted)}
+.vendor-strip{display:flex;align-items:center;gap:12px;padding:12px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);margin:20px 0;cursor:pointer}
+.vendor-strip__logo{width:44px;height:44px;border-radius:10px;background:var(--ring-bg);overflow:hidden;flex-shrink:0;display:grid;place-items:center;font-weight:800;color:var(--ring-muted)}
+.vendor-strip__logo img{width:100%;height:100%;object-fit:cover}
+.vendor-strip__body{min-width:0;flex:1}
+.vendor-strip__name{margin:0 0 2px;font-weight:700;font-size:.95rem}
+.vendor-strip__meta{margin:0;font-size:.8rem;color:var(--ring-muted)}
+.product-actions{display:flex;flex-direction:column;gap:10px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border:0;border-radius:12px;font-weight:700;font-size:.92rem;cursor:pointer;transition:background .15s,transform .06s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn--primary{background:var(--ring-accent);color:#fff}
+.btn--primary:hover:not(:disabled){background:var(--ring-accent-dk)}
+.btn--whatsapp{background:var(--whatsapp);color:#fff}
+.btn--whatsapp:hover{background:var(--whatsapp-dk)}
+.btn--dark{background:var(--ring-text);color:#fff}
+.btn--dark:hover{background:#000}
+.btn--ghost{background:transparent;color:var(--ring-muted);padding:8px 14px;font-size:.85rem}
+.btn--ghost:hover{color:var(--ring-text);background:var(--ring-bg)}
+.btn--danger{color:var(--ring-err)}
+.btn--danger:hover{background:#FEF1F0}
+.btn--small{padding:8px 14px;font-size:.82rem;border-radius:99px}
+.btn--block{width:100%}
+
+/* cart */
+.cart-group{background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow-1)}
+.cart-group--sent{opacity:.55}
+.cart-group__header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--ring-border);margin-bottom:4px}
+.cart-group__vendor{font-weight:700;cursor:pointer}
+.cart-item{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--ring-border)}
+.cart-item:last-child{border-bottom:0}
+.cart-item__img{width:56px;height:56px;border-radius:10px;overflow:hidden;background:var(--ring-bg);display:grid;place-items:center;color:var(--ring-muted)}
+.cart-item__img img{width:100%;height:100%;object-fit:cover}
+.cart-item__title{margin:0 0 2px;font-size:.95rem;font-weight:600}
+.cart-item__price{margin:0;font-size:.85rem;color:var(--ring-muted)}
+.qty{display:inline-flex;align-items:center;gap:6px;background:var(--ring-bg);border-radius:999px;padding:4px}
+.qty button{width:28px;height:28px;border:0;border-radius:50%;background:var(--ring-surface);box-shadow:var(--shadow-1);font-size:1rem;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.qty button:active{transform:scale(.94)}
+.qty span{min-width:22px;text-align:center;font-weight:600;font-size:.9rem}
+.cart-group__footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--ring-border)}
+.cart-group__subtotal{font-weight:700;font-size:1rem}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-1)}
+.stat__label{margin:0 0 6px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ring-muted)}
+.stat__value{margin:0;font-size:1.4rem;font-weight:800;letter-spacing:-.01em}
+.stat__sub{margin:4px 0 0;font-size:.75rem;color:var(--ring-muted)}
+
+/* store card (seller view) */
+.store-card{display:flex;align-items:center;gap:16px;padding:18px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);box-shadow:var(--shadow-1)}
+.store-card__logo{width:56px;height:56px;border-radius:12px;overflow:hidden;background:var(--ring-bg);flex-shrink:0;display:grid;place-items:center;font-size:1.5rem;font-weight:800;color:var(--ring-muted)}
+.store-card__logo img{width:100%;height:100%;object-fit:cover}
+.store-card__body{min-width:0;flex:1}
+.store-card__name{margin:0 0 4px;font-size:1.15rem;font-weight:800}
+.store-card__meta{margin:0 0 8px;font-size:.85rem;color:var(--ring-muted)}
+
+/* product list (seller) */
+.product-list{display:flex;flex-direction:column;gap:12px}
+.product-card{display:grid;grid-template-columns:72px 1fr;gap:14px;padding:14px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);box-shadow:var(--shadow-1)}
+@media(min-width:600px){.product-card{grid-template-columns:72px 1fr auto;align-items:center}}
+.product-card__img{width:72px;height:72px;border-radius:12px;background:var(--ring-bg);overflow:hidden;display:grid;place-items:center;color:var(--ring-muted);font-size:1.4rem}
+.product-card__img img{width:100%;height:100%;object-fit:cover}
+.product-card__title{margin:0 0 2px;font-size:.95rem;font-weight:700}
+.product-card__meta{margin:0 0 4px;font-size:.78rem;color:var(--ring-muted)}
+.product-card__price{margin:0;font-weight:800;font-size:1rem}
+.product-card__actions{display:flex;align-items:center;justify-content:space-between;gap:12px;grid-column:1/-1;padding-top:10px;border-top:1px solid var(--ring-border)}
+@media(min-width:600px){.product-card__actions{grid-column:auto;padding-top:0;border-top:0;flex-direction:column;align-items:flex-end;justify-content:center}}
+.product-card__btns{display:flex;gap:4px}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--ring-muted);cursor:pointer}
+.switch input{accent-color:var(--ring-accent)}
+
+/* quick actions */
+.quick-actions{display:grid;gap:10px;grid-template-columns:1fr;margin-top:20px}
+@media(min-width:600px){.quick-actions{grid-template-columns:1fr 1fr}}
+.quick-action{display:block;padding:16px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);box-shadow:var(--shadow-1);cursor:pointer;text-align:left;width:100%}
+.quick-action:hover{transform:translateY(-1px)}
+.quick-action strong{display:block;margin-bottom:4px;font-size:.95rem}
+.quick-action span{font-size:.82rem;color:var(--ring-muted)}
+
+/* forms */
+.field{margin-bottom:16px}
+.field label{display:block;margin-bottom:6px;font-size:.85rem;font-weight:600}
+.field input,.field textarea,.field select{width:100%;padding:11px 13px;background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:10px;outline:0}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--ring-accent);box-shadow:0 0 0 3px rgba(230,57,70,.12)}
+.field textarea{resize:vertical;min-height:72px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-hint{margin:6px 0 0;font-size:.78rem;color:var(--ring-muted)}
+.field-status{margin:6px 0 0;font-size:.8rem;min-height:1.2em}
+.field-status--ok{color:var(--ring-ok);font-weight:600}
+.field-status--error{color:var(--ring-err)}
+.form-error{background:#FEF1F0;border:1px solid #F4C7C3;color:var(--ring-err);padding:10px 12px;border-radius:10px;font-size:.875rem;margin-bottom:16px}
+.form-error--success{background:#E7F5EC;border-color:#B6E0C4;color:var(--ring-ok)}
+.checkbox{display:inline-flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600;cursor:pointer;margin:4px 0 8px}
+.checkbox input{accent-color:var(--ring-accent)}
+.image-preview{margin-top:10px;width:96px;height:96px;background:var(--ring-bg);border-radius:10px;display:grid;place-items:center;overflow:hidden;font-size:.8rem;color:var(--ring-muted)}
+.image-preview img{width:100%;height:100%;object-fit:cover}
+.slug-wrap{display:flex;align-items:stretch;border:1px solid var(--ring-border);border-radius:10px;background:var(--ring-surface);overflow:hidden}
+.slug-wrap:focus-within{border-color:var(--ring-accent);box-shadow:0 0 0 3px rgba(230,57,70,.12)}
+.slug-prefix{display:flex;align-items:center;padding:0 10px;background:#F2F2F4;color:var(--ring-muted);font-size:.85rem;border-right:1px solid var(--ring-border);white-space:nowrap}
+.slug-wrap input{flex:1;border:0;border-radius:0;padding:12px 14px;box-shadow:none !important}
+
+/* auth */
+.auth{max-width:440px;margin:0 auto;padding:32px 20px 64px}
+.auth__title{font-size:1.6rem;margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
+.auth__sub{margin:0 0 28px;color:var(--ring-muted);font-size:.95rem;line-height:1.5}
+.auth__foot{margin:24px 0 0;text-align:center;color:var(--ring-muted);font-size:.875rem}
+.auth__foot a{color:var(--ring-accent);font-weight:600}
+
+/* note */
+.note{margin:0 0 20px;padding:12px 14px;background:#F8F8FA;border:1px solid var(--ring-border);border-left:3px solid var(--ring-muted);border-radius:8px;font-size:.82rem;line-height:1.5;color:var(--ring-muted)}
+
+/* bottom nav */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;background:var(--ring-surface);border-top:1px solid var(--ring-border);padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:20}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--ring-muted);font-size:.72rem;font-weight:600;cursor:pointer;background:transparent;border:0}
+.nav-item--active{color:var(--ring-accent)}
+.nav-item svg{width:20px;height:20px}
+.nav-item .cart-badge{position:static;margin-top:2px}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:100}
+.drawer__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;transition:opacity .2s}
+.drawer--open .drawer__backdrop{opacity:1}
+.drawer__panel{position:absolute;top:0;right:0;bottom:0;width:min(320px,88vw);background:var(--ring-surface);transform:translateX(100%);transition:transform .2s;display:flex;flex-direction:column;box-shadow:-8px 0 24px rgba(0,0,0,.08)}
+.drawer--open .drawer__panel{transform:translateX(0)}
+.drawer__header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--ring-border)}
+.drawer__brand{font-weight:800;font-size:1rem;letter-spacing:.5px}
+.drawer__close{border:0;background:transparent;font-size:1.5rem;cursor:pointer;color:var(--ring-muted)}
+.drawer__nav{display:flex;flex-direction:column;padding:8px 0}
+.drawer__nav button,.drawer__nav a{padding:14px 20px;color:var(--ring-text);font-weight:600;font-size:.95rem;text-align:left;background:transparent;border:0;cursor:pointer;width:100%}
+.drawer__nav button:hover,.drawer__nav a:hover{background:var(--ring-bg)}
+.drawer__nav .drawer__cta{color:var(--ring-accent) !important;font-weight:700}
+.drawer__nav .drawer__logout{color:var(--ring-err);margin-top:8px}
+.drawer__foot{margin:auto 20px 20px;font-size:.78rem;color:var(--ring-muted)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center}
+@media(min-width:600px){.modal{align-items:center}}
+.modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .18s}
+.modal--open .modal__backdrop{opacity:1}
+.modal__panel{position:relative;width:100%;max-width:520px;max-height:92vh;background:var(--ring-surface);border-radius:20px 20px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .2s;overflow:hidden;box-shadow:var(--shadow-2)}
+@media(min-width:600px){.modal__panel{border-radius:20px}}
+.modal--open .modal__panel{transform:translateY(0)}
+.modal__header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 12px;border-bottom:1px solid var(--ring-border)}
+.modal__header h2{margin:0;font-size:1.15rem;font-weight:800}
+.modal__close{border:0;background:transparent;font-size:1.6rem;cursor:pointer;color:var(--ring-muted);line-height:1}
+.modal__body{padding:16px 20px;overflow-y:auto;flex:1}
+.modal__footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px 18px;border-top:1px solid var(--ring-border)}
+
+/* toast */
+.toast-container{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:min(420px,calc(100vw - 32px))}
+.toast{pointer-events:auto;background:#1a1a1a;color:#fff;padding:12px 16px;border-radius:10px;font-size:14px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .18s,transform .18s}
+.toast--in{opacity:1;transform:translateY(0)}
+.toast--success{background:var(--ring-ok)}
+.toast--error{background:var(--ring-err)}
+
+/* splash */
+#splash{position:fixed;inset:0;z-index:1000;background:var(--ring-text);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .55s,visibility .55s}
+#splash.gone{opacity:0;visibility:hidden;pointer-events:none}
+.splash-mark{font-size:44px;font-weight:800;letter-spacing:.34em;padding-left:.34em;animation:splashIn .8s cubic-bezier(.2,.7,.2,1) both}
+.splash-tag{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#9C9C9C;animation:splashIn .8s .12s cubic-bezier(.2,.7,.2,1) both}
+@keyframes splashIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* spinner */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{padding:40px;text-align:center;color:var(--ring-muted)}
+.loading .spinner{border-color:var(--ring-border);border-top-color:var(--ring-accent);width:28px;height:28px;border-width:3px}
+
+/* activity log */
+.log-list{display:flex;flex-direction:column;gap:10px}
+.log-card{background:var(--ring-surface);border:1px solid var(--ring-border);border-radius:var(--radius);box-shadow:var(--shadow-1);overflow:hidden}
+.log-card__head{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 16px;border:0;background:transparent;text-align:left;cursor:pointer}
+.log-card__head:hover{background:#FAFAFB}
+.log-card__when{margin:0 0 2px;font-weight:700;font-size:.95rem}
+.log-card__meta{margin:0;font-size:.8rem;color:var(--ring-muted)}
+.log-card__value{font-weight:800;font-size:1rem}
+.log-card__body{border-top:1px solid var(--ring-border);padding:8px 16px 14px;background:#FAFAFB;display:none}
+.log-card--open .log-card__body{display:block}
+.log-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.log-item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:baseline;font-size:.88rem}
+.log-item__qty{color:var(--ring-muted);font-size:.8rem}
+.log-item__line{font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-mark">RING</div>
+  <div class="splash-tag">Discover. Connect. Buy Local.</div>
+</div>
+
+<header class="topbar" id="topbar"></header>
+<main class="page" id="view"></main>
+<nav class="bottomnav" id="bottomnav"></nav>
+<div id="drawer-root"></div>
+<div id="modal-root"></div>
+<div class="toast-container" id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   RING — single-file app
+   ─────────────────────────────────────────────────────────────────
+   Edit the two values below with your Supabase project credentials.
+   Dashboard → Settings → API → Project URL and anon public key.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const SUPABASE_URL      = 'https://wlynuvbzetuhclqbtdiy.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndseW51dmJ6ZXR1aGNscWJ0ZGl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMjgzOTcsImV4cCI6MjEwNTkwNDM5N30.60PPVh3OvGYI8eTyNfqIEN9dm2xUv1r42agyEAgUgnY';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONFIG / CONSTANTS
+   ═══════════════════════════════════════════════════════════════════ */
+
+const CATEGORIES = [
+  'Fashion','Food & Groceries','Beauty & Personal Care',
+  'Phones & Accessories','Home & Living','Services'
+];
+const PAGE_SIZE = 24;
+const CART_KEY  = 'ring.cart.v1';
+const MAX_IMAGE_EDGE  = 1200;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const SLUG_RE     = /^[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])$/;
+const WHATSAPP_RE = /^234[0-9]{10}$/;
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════ */
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+function formatNaira(amount){
+  const n = Number(amount);
+  if (!Number.isFinite(n)) return '₦0';
+  const hasKobo = Math.round(n*100) % 100 !== 0;
+  return '₦' + n.toLocaleString('en-NG', {
+    minimumFractionDigits: hasKobo ? 2 : 0,
+    maximumFractionDigits: 2
+  });
+}
+function relativeTime(iso){
+  const then = new Date(iso).getTime();
+  if (!Number.isFinite(then)) return '';
+  const s = Math.floor((Date.now()-then)/1000);
+  if (s < 60) return 'just now';
+  const m = Math.floor(s/60); if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m/60); if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h/24); if (d < 7)  return `${d}d ago`;
+  return new Date(iso).toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'numeric'});
+}
+function slugify(s){
+  return String(s ?? '').toLowerCase().normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'').slice(0,40);
+}
+function normalizeWhatsApp(input){
+  const d = String(input ?? '').replace(/\D/g,'');
+  if (d.startsWith('234') && d.length === 13) return d;
+  if (d.startsWith('0')   && d.length === 11) return '234'+d.slice(1);
+  if (d.length === 10)                         return '234'+d;
+  return d;
+}
+function uuid(){
+  return crypto.randomUUID ? crypto.randomUUID() :
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random()*16|0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════════════════ */
+
+function toast(message, { type = 'info', duration = 3200 } = {}){
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type !== 'info' ? ` toast--${type}` : '');
+  el.setAttribute('role','status');
+  el.textContent = message;
+  container.appendChild(el);
+  while (container.children.length > 4) container.removeChild(container.firstChild);
+  requestAnimationFrame(() => el.classList.add('toast--in'));
+  setTimeout(() => {
+    el.classList.remove('toast--in');
+    setTimeout(() => el.remove(), 220);
+  }, duration);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   IMAGE PROCESSING
+   ═══════════════════════════════════════════════════════════════════ */
+
+async function processImage(file, { maxEdge = MAX_IMAGE_EDGE } = {}){
+  if (!file.type.startsWith('image/')) throw new Error('File is not an image.');
+  if (file.size > MAX_IMAGE_BYTES) throw new Error(`Image too large (max ${Math.round(MAX_IMAGE_BYTES/1024/1024)}MB).`);
+  const img = await new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const i = new Image();
+    i.onload  = () => { URL.revokeObjectURL(url); res(i); };
+    i.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Could not read image.')); };
+    i.src = url;
+  });
+  const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
+  const w = Math.max(1, Math.round(img.width * scale));
+  const h = Math.max(1, Math.round(img.height * scale));
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  c.getContext('2d').drawImage(img, 0, 0, w, h);
+  const webp = await new Promise(r => c.toBlob(b => r(b && b.type==='image/webp' ? b : null), 'image/webp', .85));
+  if (webp) return { blob: webp, ext: 'webp' };
+  const jpeg = await new Promise(r => c.toBlob(b => r(b && b.type==='image/jpeg' ? b : null), 'image/jpeg', .85));
+  if (jpeg) return { blob: jpeg, ext: 'jpg' };
+  throw new Error('Could not encode image.');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════════════ */
+
+const state = {
+  session: null,
+  profile: null,
+  cart: { vendors: [] },
+  route: { name: 'home', params: {} },
+  drawerOpen: false,
+  exploreQuery: '',
+  exploreCategory: '',
+  exploreProducts: [],
+  exploreTotal: 0,
+  exploreLoading: false,
+  homeStores: null,
+  homeProducts: null,
+  sellerProducts: [],
+  sellerProductsTotal: 0,
+  sellerProductsLoading: false,
+  activityLogs: [],
+  activityTotal: 0,
+  activityLoading: false,
+  editingProduct: null,
+  pendingImageBlob: null,
+  pendingImageExt: null,
+  existingImageUrl: null
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   CART (localStorage)
+   ═══════════════════════════════════════════════════════════════════ */
+
+function loadCart(){
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    state.cart = (parsed && Array.isArray(parsed.vendors)) ? parsed : { vendors: [] };
+  } catch { state.cart = { vendors: [] }; }
+}
+function saveCart(){
+  if (!state.cart.vendors.length) localStorage.removeItem(CART_KEY);
+  else localStorage.setItem(CART_KEY, JSON.stringify(state.cart));
+  updateCartBadge();
+}
+function cartCount(){
+  return state.cart.vendors.reduce((n,v) =>
+    n + v.items.reduce((m,i) => m + i.quantity, 0), 0);
+}
+function addToCart(product, vendor, qty = 1){
+  let group = state.cart.vendors.find(v => v.vendorId === vendor.id);
+  if (!group){
+    group = {
+      vendorId: vendor.id,
+      vendorSlug: vendor.store_slug,
+      vendorName: vendor.shop_name,
+      whatsapp: vendor.whatsapp_number,
+      items: []
+    };
+    state.cart.vendors.push(group);
+  }
+  const existing = group.items.find(i => i.productId === product.id);
+  if (existing) existing.quantity += qty;
+  else group.items.push({
+    productId: product.id,
+    title: product.title,
+    price: Number(product.price),
+    image_url: product.image_url || null,
+    quantity: qty
+  });
+  saveCart();
+}
+function setQty(vendorId, productId, qty){
+  const group = state.cart.vendors.find(v => v.vendorId === vendorId);
+  if (!group) return;
+  if (qty <= 0) group.items = group.items.filter(i => i.productId !== productId);
+  else {
+    const item = group.items.find(i => i.productId === productId);
+    if (item) item.quantity = qty;
+  }
+  if (!group.items.length) state.cart.vendors = state.cart.vendors.filter(v => v.vendorId !== vendorId);
+  saveCart();
+}
+function removeVendorGroup(vendorId){
+  state.cart.vendors = state.cart.vendors.filter(v => v.vendorId !== vendorId);
+  saveCart();
+}
+function vendorGroupTotal(group){
+  return group.items.reduce((n,i) => n + i.price * i.quantity, 0);
+}
+function updateCartBadge(){
+  const n = cartCount();
+  document.querySelectorAll('[data-cart-badge]').forEach(el => {
+    el.textContent = n;
+    el.classList.toggle('hidden', n === 0);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AUTH
+   ═══════════════════════════════════════════════════════════════════ */
+
+async function loadSession(){
+  const { data } = await sb.auth.getSession();
+  state.session = data.session || null;
+  if (state.session){
+    const { data: profile } = await sb.from('profiles')
+      .select('*').eq('id', state.session.user.id).maybeSingle();
+    state.profile = profile || null;
+  } else {
+    state.profile = null;
+  }
+}
+
+async function signIn(email, password){
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+  state.session = data.session;
+  const { data: profile } = await sb.from('profiles')
+    .select('*').eq('id', data.user.id).maybeSingle();
+  if (!profile) throw new Error('Signed in, but no vendor profile found. Please complete store setup.');
+  state.profile = profile;
+}
+
+async function signOut(){
+  await sb.auth.signOut();
+  state.session = null;
+  state.profile = null;
+  toast('Signed out');
+  go('#/');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ROUTER — hash based
+   ═══════════════════════════════════════════════════════════════════ */
+
+function parseHash(){
+  const hash = location.hash.replace(/^#/, '') || '/';
+  const [path, query] = hash.split('?');
+  const parts = path.split('/').filter(Boolean);
+  const params = Object.fromEntries(new URLSearchParams(query || ''));
+  return { parts, params };
+}
+
+function go(hash){
+  if (location.hash === hash) { render(); return; }
+  location.hash = hash;
+}
+
+function routeFromHash(){
+  const { parts, params } = parseHash();
+  if (!parts.length) return { name: 'home', params: {} };
+
+  const [a, b, c] = parts;
+
+  // Buyer
+  if (a === 'explore')  return { name: 'explore', params };
+  if (a === 'product')  return { name: 'product', params: { id: b } };
+  if (a === 'store')    return { name: 'store',   params: { slug: b } };
+  if (a === 'cart')     return { name: 'cart',    params: {} };
+  if (a === 'checkout') return { name: 'checkout',params: { vendorId: b } };
+  if (a === 'handoff')  return { name: 'handoff', params: { vendorId: b } };
+  if (a === 'about')    return { name: 'about',   params: {} };
+  if (a === 'login')    return { name: 'login',   params };
+  if (a === 'register') return { name: 'register',params };
+
+  // Seller
+  if (a === 'seller'){
+    if (!b) return { name: 'seller-dashboard', params: {} };
+    if (b === 'products'){
+      if (c === 'new') return { name: 'seller-product-new', params: {} };
+      if (c) return { name: 'seller-product-edit', params: { id: c } };
+      return { name: 'seller-products', params: {} };
+    }
+    if (b === 'store')    return { name: 'seller-store', params: {} };
+    if (b === 'activity') return { name: 'seller-activity', params: {} };
+  }
+
+  return { name: 'home', params: {} };
+}
+
+function render(){
+  state.route = routeFromHash();
+  renderChrome();
+  renderView();
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHROME — topbar, bottom nav, drawer
+   ═══════════════════════════════════════════════════════════════════ */
+
+const ICONS = {
+  menu:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  cart:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1.2 12H4.8L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  home:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1v-9z"/></svg>',
+  grid:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg>',
+  store:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.6-5h14.8L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>',
+  back:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>'
+};
+
+function renderChrome(){
+  renderTopbar();
+  renderBottomNav();
+  updateCartBadge();
+}
+
+function renderTopbar(){
+  const el = document.getElementById('topbar');
+  const isSeller = state.route.name.startsWith('seller');
+  const inAuth = state.route.name === 'login' || state.route.name === 'register';
+
+  if (inAuth){
+    el.innerHTML = `
+      <a class="brand" href="#/">RING</a>
+      <a class="btn btn--ghost btn--small" href="#/${state.route.name === 'login' ? 'register' : 'login'}">
+        ${state.route.name === 'login' ? 'Open a store' : 'Sign in'}
+      </a>
+    `;
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="icon-btn" data-drawer aria-label="Menu">${ICONS.menu}</button>
+      <a class="brand" href="#/${isSeller ? 'seller' : ''}">RING</a>
+    </div>
+    <div class="topbar__right">
+      ${!isSeller ? `
+        <button class="icon-btn" data-go="#/explore" aria-label="Search">${ICONS.search}</button>
+        <button class="icon-btn" data-go="#/cart" aria-label="Cart">
+          ${ICONS.cart}
+          <span class="cart-badge hidden" data-cart-badge>0</span>
+        </button>
+      ` : `
+        <a class="btn btn--ghost btn--small" href="#/">Buyer mode</a>
+      `}
+    </div>
+  `;
+}
+
+function renderBottomNav(){
+  const el = document.getElementById('bottomnav');
+  const isSeller = state.route.name.startsWith('seller');
+  const inAuth = state.route.name === 'login' || state.route.name === 'register';
+  if (inAuth){ el.innerHTML = ''; return; }
+
+  if (isSeller){
+    const active = state.route.name;
+    el.innerHTML = `
+      <button class="nav-item ${active==='seller-dashboard'?'nav-item--active':''}" data-go="#/seller">${ICONS.home}<span>Dashboard</span></button>
+      <button class="nav-item ${active.startsWith('seller-product')?'nav-item--active':''}" data-go="#/seller/products">${ICONS.grid}<span>Products</span></button>
+      <button class="nav-item ${active==='seller-activity'?'nav-item--active':''}" data-go="#/seller/activity">${ICONS.cart}<span>Activity</span></button>
+      <button class="nav-item" data-drawer>${ICONS.menu}<span>Menu</span></button>
+    `;
+    return;
+  }
+
+  const active = state.route.name;
+  el.innerHTML = `
+    <button class="nav-item ${active==='home'?'nav-item--active':''}" data-go="#/">${ICONS.home}<span>Home</span></button>
+    <button class="nav-item ${active==='explore'||active==='product'||active==='store'?'nav-item--active':''}" data-go="#/explore">${ICONS.search}<span>Explore</span></button>
+    <button class="nav-item ${active==='cart'||active==='checkout'?'nav-item--active':''}" data-go="#/cart">${ICONS.cart}<span>Cart</span></button>
+    <button class="nav-item" data-drawer>${ICONS.menu}<span>Menu</span></button>
+  `;
+}
+
+function openDrawer(){
+  const root = document.getElementById('drawer-root');
+  const isSeller = state.route.name.startsWith('seller');
+  root.innerHTML = `
+    <div class="drawer" id="drawer">
+      <div class="drawer__backdrop" data-drawer-close></div>
+      <aside class="drawer__panel" role="dialog" aria-label="Menu">
+        <header class="drawer__header">
+          <span class="drawer__brand">RING</span>
+          <button class="drawer__close" data-drawer-close aria-label="Close">×</button>
+        </header>
+        <nav class="drawer__nav">
+          ${isSeller ? `
+            <button data-go="#/">Switch to Buyer</button>
+            <button data-go="#/seller">Dashboard</button>
+            <button data-go="#/seller/products">My Products</button>
+            <button data-go="#/seller/store">My Store</button>
+            <button data-go="#/seller/activity">Activity</button>
+            <button data-go="#/about">About Ring</button>
+            <button class="drawer__logout" data-action="logout">Logout</button>
+          ` : `
+            <button data-go="#/">Home</button>
+            <button data-go="#/explore">Explore</button>
+            <button data-go="#/cart">Cart</button>
+            <button data-go="#/about">About Ring</button>
+            ${state.profile ? `
+              <button class="drawer__cta" data-go="#/seller">Switch to Seller →</button>
+            ` : `
+              <button class="drawer__cta" data-go="#/register">Open a store →</button>
+            `}
+          `}
+        </nav>
+        <p class="drawer__foot">Discover. Connect. Buy Local.</p>
+      </aside>
+    </div>
+  `;
+  requestAnimationFrame(() => document.getElementById('drawer').classList.add('drawer--open'));
+}
+
+function closeDrawer(){
+  const el = document.getElementById('drawer');
+  if (!el) return;
+  el.classList.remove('drawer--open');
+  setTimeout(() => { document.getElementById('drawer-root').innerHTML = ''; }, 220);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIEWS — BUYER
+   ═══════════════════════════════════════════════════════════════════ */
+
+const view = () => document.getElementById('view');
+
+function renderView(){
+  const r = state.route;
+  const fn = VIEWS[r.name] || VIEWS.home;
+  view().innerHTML = fn(r.params) || '';
+  if (r.name === 'explore') loadExplore();
+  if (r.name === 'home')    loadHome();
+  if (r.name === 'store')   loadStore(r.params.slug);
+  if (r.name === 'product') loadProduct(r.params.id);
+  if (r.name === 'seller-dashboard') loadSellerDashboard();
+  if (r.name === 'seller-products')  loadSellerProducts();
+  if (r.name === 'seller-activity')  loadSellerActivity();
+}
+
+const VIEWS = {};
+
+/* ─── HOME ─────────────────────────────────────────────────────── */
+
+VIEWS.home = () => `
+  <section class="hero">
+    <h1 class="hero__title">Discover. Connect. Buy Local.</h1>
+    <p class="hero__sub">Shop from local Nigerian vendors. Reach them directly on WhatsApp.</p>
+    <form class="hero__search" data-form="hero-search">
+      <input id="hero-q" type="search" placeholder="Search products or vendors…" aria-label="Search">
+      <button type="submit" class="btn btn--primary">Search</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">Categories</h2>
+    <div class="chip-bar">
+      ${CATEGORIES.map(c => `
+        <button class="chip" data-go="#/explore?category=${encodeURIComponent(c)}">${escapeHtml(c)}</button>
+      `).join('')}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">Featured stores</h2>
+    <div class="store-grid" id="home-stores"><div class="loading"><div class="spinner"></div></div></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">New arrivals</h2>
+    <div class="product-grid" id="home-products"><div class="loading"><div class="spinner"></div></div></div>
+  </section>
+
+  <section class="section">
+    <a class="quick-action" href="#/explore" style="display:flex;justify-content:space-between;align-items:center;background:var(--ring-text);color:#fff">
+      <strong style="margin:0">Explore the full marketplace</strong>
+      <span style="color:#fff;font-size:1.2rem">→</span>
+    </a>
+  </section>
+`;
+
+async function loadHome(){
+  // Featured stores
+  const storesEl = document.getElementById('home-stores');
+  if (storesEl){
+    const { data, error } = await sb.from('profiles')
+      .select('id, shop_name, store_slug, logo_url, location')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(6);
+    if (error){
+      storesEl.innerHTML = `<p class="muted" style="color:var(--ring-muted);font-size:.85rem;grid-column:1/-1">Could not load stores. ${escapeHtml(error.message)}</p>`;
+    } else if (!data || !data.length){
+      storesEl.innerHTML = `
+        <div class="empty" style="grid-column:1/-1">
+          <p>No stores on RING yet.</p>
+          <a class="btn btn--primary" href="#/register">Open a store</a>
+        </div>`;
+    } else {
+      storesEl.innerHTML = data.map(renderStoreCard).join('');
+    }
+  }
+
+  // New arrivals
+  const productsEl = document.getElementById('home-products');
+  if (productsEl){
+    const { data, error } = await sb.from('products')
+      .select('id, title, price, image_url, is_available, profiles!inner(shop_name, store_slug)')
+      .eq('is_available', true)
+      .order('created_at', { ascending: false })
+      .limit(8);
+    if (error){
+      productsEl.innerHTML = `<p style="color:var(--ring-muted);font-size:.85rem;grid-column:1/-1">Could not load products. ${escapeHtml(error.message)}</p>`;
+    } else if (!data || !data.length){
+      productsEl.innerHTML = `
+        <div class="empty" style="grid-column:1/-1">
+          <p>No products listed yet.</p>
+          <a class="btn btn--primary" href="#/register">Sell on RING</a>
+        </div>`;
+    } else {
+      productsEl.innerHTML = data.map(renderProductCard).join('');
+    }
+  }
+}
+
+function renderStoreCard(v){
+  const initial = (v.shop_name?.[0] ?? '?').toUpperCase();
+  const logo = v.logo_url
+    ? `<img src="${escapeHtml(v.logo_url)}" alt="" loading="lazy">`
+    : `<span>${escapeHtml(initial)}</span>`;
+  return `
+    <a class="store-card-sm" href="#/store/${encodeURIComponent(v.store_slug)}">
+      <div class="store-card-sm__logo">${logo}</div>
+      <div class="store-card-sm__body">
+        <p class="store-card-sm__name">${escapeHtml(v.shop_name)}</p>
+        <p class="store-card-sm__meta">${v.location ? escapeHtml(v.location) : `/${escapeHtml(v.store_slug)}`}</p>
+      </div>
+    </a>
+  `;
+}
+
+function renderProductCard(p){
+  const vendorName = p.profiles?.shop_name ?? 'Vendor';
+  return `
+    <a class="product-card-b" href="#/product/${encodeURIComponent(p.id)}" style="position:relative">
+      <div class="product-card-b__img">
+        ${p.image_url
+          ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy">`
+          : '<span class="product-card-b__ph" aria-hidden="true">📦</span>'}
+      </div>
+      <div class="product-card-b__body">
+        <p class="product-card-b__title">${escapeHtml(p.title)}</p>
+        <p class="product-card-b__vendor">${escapeHtml(vendorName)}</p>
+        <p class="product-card-b__price">${formatNaira(p.price)}</p>
+      </div>
+    </a>
+  `;
+}
+
+/* ─── EXPLORE ──────────────────────────────────────────────────── */
+
+VIEWS.explore = () => {
+  const q = state.route.params.q || '';
+  const cat = state.route.params.category || '';
+  state.exploreQuery = q;
+  state.exploreCategory = cat;
+  state.exploreProducts = [];
+  state.exploreTotal = 0;
+  return `
+    <h1 class="page-title">Explore</h1>
+    <div class="search-row">
+      <input id="explore-q" type="search" placeholder="Search products or vendors…" value="${escapeHtml(q)}" aria-label="Search">
+    </div>
+    <div class="chip-bar" id="explore-chips">
+      ${CATEGORIES.map(c => `
+        <button class="chip ${cat === c ? 'chip--active' : ''}" data-explore-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>
+      `).join('')}
+    </div>
+    <div class="product-grid" id="explore-grid"></div>
+    <div class="center" style="display:flex;justify-content:center;padding:16px 0">
+      <button class="btn btn--ghost" id="explore-more" hidden>Load more</button>
+    </div>
+  `;
+};
+
+let exploreSearchTimer;
+function loadExplore(){
+  const qEl = document.getElementById('explore-q');
+  if (qEl && !qEl.dataset.wired){
+    qEl.dataset.wired = '1';
+    qEl.addEventListener('input', () => {
+      clearTimeout(exploreSearchTimer);
+      exploreSearchTimer = setTimeout(() => {
+        state.exploreQuery = qEl.value.trim();
+        reloadExplore();
+      }, 300);
+    });
+  }
+  const chips = document.getElementById('explore-chips');
+  if (chips && !chips.dataset.wired){
+    chips.dataset.wired = '1';
+    chips.addEventListener('click', e => {
+      const c = e.target.closest('[data-explore-cat]');
+      if (!c) return;
+      const val = c.dataset.exploreCat;
+      state.exploreCategory = state.exploreCategory === val ? '' : val;
+      chips.querySelectorAll('.chip').forEach(x => x.classList.toggle('chip--active', x.dataset.exploreCat === state.exploreCategory));
+      reloadExplore();
+    });
+  }
+  const more = document.getElementById('explore-more');
+  if (more && !more.dataset.wired){
+    more.dataset.wired = '1';
+    more.addEventListener('click', () => loadExplorePage());
+  }
+  reloadExplore();
+}
+
+function sanitizeQuery(raw){
+  return String(raw).replace(/[%_\\,()'"]/g, '').slice(0, 80);
+}
+
+function exploreQueryBuilder(){
+  let q = sb.from('products')
+    .select('id, title, price, image_url, is_available, category, profiles!inner(shop_name, store_slug, is_active)', { count: 'exact' })
+    .eq('is_available', true)
+    .eq('profiles.is_active', true);
+  if (state.exploreCategory) q = q.eq('category', state.exploreCategory);
+  const safe = sanitizeQuery(state.exploreQuery);
+  if (safe) q = q.or(`title.ilike.%${safe}%,profiles.shop_name.ilike.%${safe}%`);
+  return q.order('created_at', { ascending: false });
+}
+
+async function reloadExplore(){
+  state.exploreProducts = [];
+  state.exploreTotal = 0;
+  const grid = document.getElementById('explore-grid');
+  if (grid) grid.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div>`;
+  await loadExplorePage();
+}
+
+async function loadExplorePage(){
+  if (state.exploreLoading) return;
+  state.exploreLoading = true;
+  const more = document.getElementById('explore-more');
+  if (more) more.disabled = true;
+  const from = state.exploreProducts.length;
+  const to = from + PAGE_SIZE - 1;
+  const { data, error, count } = await exploreQueryBuilder().range(from, to);
+  state.exploreLoading = false;
+  if (more) more.disabled = false;
+  const grid = document.getElementById('explore-grid');
+  if (!grid) return;
+  if (error){
+    grid.innerHTML = `<p style="grid-column:1/-1;color:var(--ring-muted)">Could not load: ${escapeHtml(error.message)}</p>`;
+    return;
+  }
+  state.exploreProducts = state.exploreProducts.concat(data ?? []);
+  state.exploreTotal = count ?? 0;
+  if (!state.exploreProducts.length){
+    grid.innerHTML = `
+      <div class="empty" style="grid-column:1/-1">
+        <p>Nothing matches those filters yet.</p>
+        <button class="btn btn--primary" data-explore-reset>Reset filters</button>
+      </div>`;
+    if (more) more.hidden = true;
+    return;
+  }
+  grid.innerHTML = state.exploreProducts.map(renderProductCard).join('');
+  if (more) more.hidden = state.exploreProducts.length >= state.exploreTotal;
+}
+
+/* ─── PRODUCT ──────────────────────────────────────────────────── */
+
+VIEWS.product = () => `<div id="product-root"><div class="loading"><div class="spinner"></div></div></div>`;
+
+async function loadProduct(id){
+  const root = document.getElementById('product-root');
+  if (!root) return;
+  if (!id){ root.innerHTML = `<div class="empty"><p>No product specified.</p></div>`; return; }
+  const { data: p, error } = await sb.from('products')
+    .select('id, title, price, description, image_url, category, is_available, created_at, profiles!inner(id, shop_name, store_slug, whatsapp_number, logo_url, is_active)')
+    .eq('id', id).eq('is_available', true).maybeSingle();
+  if (error || !p || !p.profiles?.is_active){
+    root.innerHTML = `<div class="empty"><p>Product not found or no longer available.</p><a class="btn btn--primary" href="#/explore">Back to Explore</a></div>`;
+    return;
+  }
+  const v = p.profiles;
+  const waMsg = `Hi ${v.shop_name}, I'm interested in "${p.title}" (${formatNaira(p.price)}) on RING. Is it available?`;
+  const waUrl = `https://wa.me/${v.whatsapp_number}?text=${encodeURIComponent(waMsg)}`;
+  const initial = (v.shop_name?.[0] ?? '?').toUpperCase();
+  root.innerHTML = `
+    <button class="btn btn--ghost btn--small" data-back style="margin-bottom:12px">${ICONS.back} Back</button>
+    <div class="product-hero">
+      ${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="">` : '<div class="product-hero__ph">📦</div>'}
+    </div>
+    <p class="product-cat">${escapeHtml(p.category)}</p>
+    <h1 class="product-title">${escapeHtml(p.title)}</h1>
+    <p class="product-price">${formatNaira(p.price)}</p>
+    ${p.description ? `<p class="product-desc">${escapeHtml(p.description)}</p>` : ''}
+    <p class="product-meta">Listed ${relativeTime(p.created_at)}</p>
+    <a class="vendor-strip" href="#/store/${encodeURIComponent(v.store_slug)}">
+      <div class="vendor-strip__logo">
+        ${v.logo_url ? `<img src="${escapeHtml(v.logo_url)}" alt="">` : `<span>${escapeHtml(initial)}</span>`}
+      </div>
+      <div class="vendor-strip__body">
+        <p class="vendor-strip__name">${escapeHtml(v.shop_name)}</p>
+        <p class="vendor-strip__meta">View store →</p>
+      </div>
+    </a>
+    <div class="product-actions">
+      <button class="btn btn--primary btn--block" id="add-cart-btn">Add to cart</button>
+      <a class="btn btn--whatsapp btn--block" href="${waUrl}" target="_blank" rel="noopener">Ask on WhatsApp</a>
+    </div>
+  `;
+  document.getElementById('add-cart-btn').addEventListener('click', () => {
+    addToCart(
+      { id: p.id, title: p.title, price: p.price, image_url: p.image_url },
+      { id: v.id, shop_name: v.shop_name, store_slug: v.store_slug, whatsapp_number: v.whatsapp_number }
+    );
+    toast('Added to cart.', { type: 'success' });
+  });
+}
+
+/* ─── STORE ────────────────────────────────────────────────────── */
+
+VIEWS.store = () => `<div id="store-root"><div class="loading"><div class="spinner"></div></div></div>`;
+
+async function loadStore(slug){
+  const root = document.getElementById('store-root');
+  if (!root) return;
+  if (!slug){ root.innerHTML = `<div class="empty"><p>No store specified.</p></div>`; return; }
+  const { data: v, error } = await sb.from('profiles')
+    .select('id, shop_name, store_slug, logo_url, description, location, whatsapp_number, is_active')
+    .eq('store_slug', slug).eq('is_active', true).maybeSingle();
+  if (error || !v){
+    root.innerHTML = `<div class="empty"><p>Store not found.</p><a class="btn btn--primary" href="#/explore">Back to Explore</a></div>`;
+    return;
+  }
+  const initial = (v.shop_name?.[0] ?? '?').toUpperCase();
+  const logo = v.logo_url ? `<img src="${escapeHtml(v.logo_url)}" alt="">` : `<span>${escapeHtml(initial)}</span>`;
+  const wa = `https://wa.me/${v.whatsapp_number}?text=${encodeURIComponent(`Hi ${v.shop_name}, I found your store on RING.`)}`;
+
+  root.innerHTML = `
+    <button class="btn btn--ghost btn--small" data-back style="margin-bottom:12px">${ICONS.back} Back</button>
+    <div class="store-header">
+      <div class="store-header__logo">${logo}</div>
+      <div class="store-header__body">
+        <h1 class="store-header__name">${escapeHtml(v.shop_name)}</h1>
+        ${v.location ? `<p class="store-header__meta">${escapeHtml(v.location)}</p>` : ''}
+        ${v.description ? `<p class="store-header__desc">${escapeHtml(v.description)}</p>` : ''}
+        <a class="btn btn--whatsapp btn--small" href="${wa}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
+    <h2 class="section__title">Products</h2>
+    <div class="product-grid" id="store-products"><div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div></div>
+  `;
+
+  const { data: products } = await sb.from('products')
+    .select('id, title, price, image_url, is_available, profiles!inner(shop_name, store_slug)')
+    .eq('vendor_id', v.id).eq('is_available', true)
+    .order('created_at', { ascending: false });
+  const grid = document.getElementById('store-products');
+  if (!grid) return;
+  if (!products || !products.length){
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><p>No products listed yet.</p></div>`;
+    return;
+  }
+  grid.innerHTML = products.map(renderProductCard).join('');
+}
+
+/* ─── CART ─────────────────────────────────────────────────────── */
+
+VIEWS.cart = () => {
+  if (!state.cart.vendors.length){
+    return `
+      <h1 class="page-title">Your Cart</h1>
+      <div class="empty">
+        <p>Your cart is empty.</p>
+        <a class="btn btn--primary" href="#/explore">Browse products</a>
+      </div>`;
+  }
+  const groups = state.cart.vendors.map(renderCartGroup).join('');
+  return `
+    <h1 class="page-title">Your Cart</h1>
+    ${groups}
+  `;
+};
+
+function renderCartGroup(group){
+  const items = group.items.map(it => `
+    <div class="cart-item">
+      <div class="cart-item__img">
+        ${it.image_url ? `<img src="${escapeHtml(it.image_url)}" alt="">` : '<span>📦</span>'}
+      </div>
+      <div>
+        <p class="cart-item__title">${escapeHtml(it.title)}</p>
+        <p class="cart-item__price">${formatNaira(it.price)} each</p>
+      </div>
+      <div class="qty">
+        <button data-qty="${escapeHtml(group.vendorId)}|${escapeHtml(it.productId)}|-1">−</button>
+        <span>${it.quantity}</span>
+        <button data-qty="${escapeHtml(group.vendorId)}|${escapeHtml(it.productId)}|1">+</button>
+      </div>
+    </div>
+  `).join('');
+  return `
+    <section class="cart-group" data-vendor-group="${escapeHtml(group.vendorId)}">
+      <header class="cart-group__header">
+        <a class="cart-group__vendor" href="#/store/${encodeURIComponent(group.vendorSlug)}">${escapeHtml(group.vendorName)}</a>
+        <button class="btn btn--ghost btn--small" data-remove-group="${escapeHtml(group.vendorId)}">Remove all</button>
+      </header>
+      ${items}
+      <div class="cart-group__footer">
+        <span class="cart-group__subtotal">${formatNaira(vendorGroupTotal(group))}</span>
+        <button class="btn btn--whatsapp" data-checkout="${escapeHtml(group.vendorId)}">Checkout on WhatsApp</button>
+      </div>
+    </section>
+  `;
+}
+
+/* ─── CHECKOUT HANDOFF ─────────────────────────────────────────── */
+
+VIEWS.checkout = ({ vendorId }) => {
+  const group = state.cart.vendors.find(v => v.vendorId === vendorId);
+  if (!group) return `<div class="empty"><p>Cart group not found.</p><a class="btn btn--primary" href="#/cart">Back to cart</a></div>`;
+  return `
+    <button class="btn btn--ghost btn--small" data-back style="margin-bottom:12px">${ICONS.back} Back to cart</button>
+    <h1 class="page-title">Your order</h1>
+    <p class="note">Review your items before continuing to WhatsApp.</p>
+    <section class="cart-group">
+      <header class="cart-group__header">
+        <span class="cart-group__vendor">${escapeHtml(group.vendorName)}</span>
+      </header>
+      ${group.items.map(it => `
+        <div class="cart-item">
+          <div class="cart-item__img">${it.image_url ? `<img src="${escapeHtml(it.image_url)}" alt="">` : '<span>📦</span>'}</div>
+          <div>
+            <p class="cart-item__title">${it.quantity} × ${escapeHtml(it.title)}</p>
+            <p class="cart-item__price">${formatNaira(it.price)} each</p>
+          </div>
+          <div style="font-weight:700">${formatNaira(it.price * it.quantity)}</div>
+        </div>
+      `).join('')}
+      <div class="cart-group__footer">
+        <span class="cart-group__subtotal">Total: ${formatNaira(vendorGroupTotal(group))}</span>
+      </div>
+    </section>
+    <div class="note">You'll continue your order directly with the seller on WhatsApp. RING does not process payment.</div>
+    <button class="btn btn--whatsapp btn--block" data-send-whatsapp="${escapeHtml(vendorId)}" style="padding:16px">Continue to WhatsApp</button>
+  `;
+};
+
+VIEWS.handoff = ({ vendorId }) => {
+  const lastMsg = sessionStorage.getItem('ring.lastMsg.' + vendorId) || '';
+  const group = state.cart.vendors.find(v => v.vendorId === vendorId);
+  const vendorName = group?.vendorName || 'the seller';
+  return `
+    <div class="empty" style="border-style:solid;background:var(--ring-surface)">
+      <div style="font-size:2.4rem">💬</div>
+      <h2 style="margin:12px 0 6px;font-size:1.25rem">You're being connected to ${escapeHtml(vendorName)}</h2>
+      <p>Your order details have been prepared.</p>
+    </div>
+    <div class="note" style="margin-top:16px;font-family:monospace;white-space:pre-wrap;font-size:.8rem">${escapeHtml(lastMsg)}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn--whatsapp btn--block" data-reopen-wa="${escapeHtml(vendorId)}">Continue on WhatsApp</button>
+      <a class="btn btn--ghost btn--block" href="#/">Back to Ring</a>
+    </div>
+    <div class="note" style="margin-top:20px">
+      <strong>Ring does not process payment.</strong> The transaction continues directly between you and ${escapeHtml(vendorName)}.
+    </div>
+  `;
+};
+
+/* ─── ABOUT ────────────────────────────────────────────────────── */
+
+VIEWS.about = () => `
+  <h1 class="page-title">About RING</h1>
+  <div class="note" style="border-left-color:var(--ring-accent)">
+    <strong>Discover. Connect. Buy Local.</strong><br>
+    Your local marketplace for discovering products and connecting directly with the people who sell them.
+  </div>
+  <section class="section">
+    <h2 class="section__title">What Ring is</h2>
+    <p style="font-size:.95rem;line-height:1.65;color:var(--ring-muted)">
+      Ring is a digital catalog that puts local Nigerian vendors in front of buyers who are already looking for what they sell.
+      Vendors get a real storefront — a name, a description, a location and a product catalog — without needing a website.
+    </p>
+  </section>
+  <section class="section">
+    <h2 class="section__title">What Ring is not</h2>
+    <div class="note">
+      Ring is not a payment platform. There is no wallet, no card processing, no Ring balance.
+      The conversation, price and payment stay between buyer and seller.
+    </div>
+  </section>
+  <section class="section">
+    <h2 class="section__title">How it works</h2>
+    <div class="quick-actions">
+      <div class="quick-action"><strong>1. Discover</strong><span>Browse products from local vendors.</span></div>
+      <div class="quick-action"><strong>2. Add to cart</strong><span>Collect items from any vendor.</span></div>
+      <div class="quick-action"><strong>3. Checkout on WhatsApp</strong><span>Ring hands your order to the seller.</span></div>
+      <div class="quick-action"><strong>4. Deal directly</strong><span>Agree price, delivery, payment with the seller.</span></div>
+    </div>
+  </section>
+`;
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIEWS — AUTH
+   ═══════════════════════════════════════════════════════════════════ */
+
+VIEWS.login = () => `
+  <main class="auth">
+    <h1 class="auth__title">Welcome back</h1>
+    <p class="auth__sub">Sign in to manage your store.</p>
+    <form id="login-form" novalidate>
+      <div class="form-error hidden" id="login-error"></div>
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn--primary btn--block" id="login-submit" type="submit">Sign in</button>
+      <p class="auth__foot">New to RING? <a href="#/register">Open a store</a></p>
+    </form>
+  </main>
+`;
+
+VIEWS.register = () => `
+  <main class="auth">
+    <h1 class="auth__title">Open your store on RING</h1>
+    <p class="auth__sub">Discover. Connect. Buy Local. Free to join.</p>
+    <form id="register-form" novalidate>
+      <div class="form-error hidden" id="register-error"></div>
+
+      <div class="field">
+        <label for="reg-email">Email</label>
+        <input id="reg-email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="reg-password">Password</label>
+        <input id="reg-password" type="password" autocomplete="new-password" minlength="8" required>
+        <p class="field-hint">At least 8 characters.</p>
+      </div>
+      <div class="field">
+        <label for="reg-shop-name">Shop name</label>
+        <input id="reg-shop-name" type="text" maxlength="60" required>
+      </div>
+      <div class="field">
+        <label for="reg-slug">Store link</label>
+        <div class="slug-wrap">
+          <span class="slug-prefix">ring.app/store/</span>
+          <input id="reg-slug" type="text" maxlength="40" required>
+        </div>
+        <p class="field-status" id="reg-slug-status"></p>
+      </div>
+      <div class="field">
+        <label for="reg-whatsapp">WhatsApp number</label>
+        <input id="reg-whatsapp" type="tel" placeholder="08012345678" required>
+        <p class="field-hint">Nigerian number. Normalized to <code>234…</code>.</p>
+      </div>
+      <div class="field">
+        <label for="reg-location">Location (optional)</label>
+        <input id="reg-location" type="text" maxlength="120">
+      </div>
+      <div class="field">
+        <label for="reg-description">Description (optional)</label>
+        <textarea id="reg-description" rows="3" maxlength="500"></textarea>
+      </div>
+      <div class="field">
+        <label for="reg-logo">Store logo (optional)</label>
+        <input id="reg-logo" type="file" accept="image/*">
+      </div>
+      <button class="btn btn--primary btn--block" id="register-submit" type="submit">Create my store</button>
+      <p class="auth__foot">Already selling? <a href="#/login">Sign in</a></p>
+    </form>
+  </main>
+`;
+
+async function wireLoginForm(){
+  const form = document.getElementById('login-form');
+  if (!form) return;
+  const errEl = document.getElementById('login-error');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!email || !password){ showFormError(errEl, 'Email and password required.'); return; }
+    const btn = document.getElementById('login-submit');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    try {
+      await signIn(email, password);
+      toast('Welcome back!', { type: 'success' });
+      go('#/seller');
+    } catch (err){
+      showFormError(errEl, err.message || 'Unable to sign in.');
+      btn.disabled = false; btn.textContent = 'Sign in';
+    }
+  });
+}
+
+async function wireRegisterForm(){
+  const form = document.getElementById('register-form');
+  if (!form) return;
+  const errEl = document.getElementById('register-error');
+  const slugStatus = document.getElementById('reg-slug-status');
+  const shopName = document.getElementById('reg-shop-name');
+  const slugInput = document.getElementById('reg-slug');
+  const waInput = document.getElementById('reg-whatsapp');
+
+  let slugTouched = false;
+  slugInput.addEventListener('input', () => slugTouched = true);
+  shopName.addEventListener('input', () => {
+    if (!slugTouched) slugInput.value = slugify(shopName.value);
+  });
+
+  let slugTimer;
+  slugInput.addEventListener('input', () => {
+    clearTimeout(slugTimer);
+    const v = slugInput.value.trim();
+    if (!v){ setStatus(slugStatus, '', ''); return; }
+    if (!SLUG_RE.test(v)){ setStatus(slugStatus, 'Invalid format.', 'error'); return; }
+    setStatus(slugStatus, 'Checking…', '');
+    slugTimer = setTimeout(async () => {
+      try {
+        const { data, error } = await sb.rpc('check_slug_available', { p_slug: v });
+        if (error) throw error;
+        if (data === true) setStatus(slugStatus, `✓ /${v} available`, 'ok');
+        else               setStatus(slugStatus, 'Slug already taken.', 'error');
+      } catch (err){
+        // RPC might not exist — fall back to direct query (may fail under RLS)
+        const { data } = await sb.from('profiles').select('id').eq('store_slug', v).maybeSingle();
+        if (data) setStatus(slugStatus, 'Slug already taken.', 'error');
+        else      setStatus(slugStatus, `✓ /${v} available`, 'ok');
+      }
+    }, 350);
+  });
+
+  waInput.addEventListener('blur', () => {
+    const n = normalizeWhatsApp(waInput.value);
+    if (WHATSAPP_RE.test(n)) waInput.value = n;
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    const email     = document.getElementById('reg-email').value.trim();
+    const password  = document.getElementById('reg-password').value;
+    const shopNameV = shopName.value.trim();
+    const slug      = slugInput.value.trim();
+    const whatsapp  = normalizeWhatsApp(waInput.value.trim());
+    const locationV = document.getElementById('reg-location').value.trim();
+    const descV     = document.getElementById('reg-description').value.trim();
+    const logoFile  = document.getElementById('reg-logo').files?.[0];
+
+    if (shopNameV.length < 2 || shopNameV.length > 60) return showFormError(errEl, 'Shop name must be 2–60 characters.');
+    if (!SLUG_RE.test(slug))                            return showFormError(errEl, 'Store slug is invalid.');
+    if (!WHATSAPP_RE.test(whatsapp))                    return showFormError(errEl, 'WhatsApp number must be a valid Nigerian number.');
+    if (!email || !password)                            return showFormError(errEl, 'Email and password are required.');
+    if (password.length < 8)                            return showFormError(errEl, 'Password must be at least 8 characters.');
+
+    const btn = document.getElementById('register-submit');
+    btn.disabled = true; btn.textContent = 'Please wait…';
+    try {
+      const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email, password });
+      if (signUpError) throw signUpError;
+      if (!signUpData.session) throw new Error('Account created but no session. Turn OFF email confirmation in Supabase (Authentication → Providers → Email).');
+      const userId = signUpData.session.user.id;
+
+      // Slug check
+      try {
+        const { data: slugOk } = await sb.rpc('check_slug_available', { p_slug: slug });
+        if (slugOk === false) throw new Error('Slug already taken.');
+      } catch (e){ /* ignore if RPC missing */ }
+
+      // Optional logo upload
+      let logo_url = null;
+      if (logoFile){
+        try {
+          const { blob, ext } = await processImage(logoFile, { maxEdge: 512 });
+          const path = `${userId}/logo-${Date.now()}.${ext}`;
+          const { error: upErr } = await sb.storage.from('store-logos').upload(path, blob, { contentType: blob.type, upsert: true });
+          if (upErr) throw upErr;
+          logo_url = sb.storage.from('store-logos').getPublicUrl(path).data.publicUrl;
+        } catch (err){ toast('Logo upload skipped: ' + err.message, { type: 'error' }); }
+      }
+
+      const { error: insertError } = await sb.from('profiles').insert({
+        id: userId,
+        shop_name: shopNameV,
+        store_slug: slug,
+        whatsapp_number: whatsapp,
+        description: descV || null,
+        location: locationV || null,
+        logo_url,
+        role: 'vendor'
+      });
+      if (insertError) throw insertError;
+
+      toast('Store created! Signing you in…', { type: 'success' });
+      await loadSession();
+      go('#/seller');
+    } catch (err){
+      showFormError(errEl, err.message || 'Something went wrong.');
+      btn.disabled = false; btn.textContent = 'Create my store';
+    }
+  });
+}
+
+function setStatus(el, msg, kind){
+  el.textContent = msg;
+  el.className = 'field-status' + (kind ? ` field-status--${kind}` : '');
+}
+function showFormError(el, msg){
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIEWS — SELLER
+   ═══════════════════════════════════════════════════════════════════ */
+
+function requireSeller(){
+  if (!state.session || !state.profile || state.profile.role !== 'vendor'){
+    location.hash = '#/login';
+    return false;
+  }
+  return true;
+}
+
+VIEWS['seller-dashboard'] = () => {
+  if (!requireSeller()) return '';
+  const p = state.profile;
+  const initial = (p.shop_name?.[0] ?? '?').toUpperCase();
+  return `
+    <section class="store-card">
+      <div class="store-card__logo">
+        ${p.logo_url ? `<img src="${escapeHtml(p.logo_url)}" alt="">` : `<span>${escapeHtml(initial)}</span>`}
+      </div>
+      <div class="store-card__body">
+        <h2 class="store-card__name">${escapeHtml(p.shop_name)}</h2>
+        <p class="store-card__meta">${escapeHtml(p.location || `/${p.store_slug}`)}</p>
+        <a class="btn btn--ghost btn--small" href="#/store/${encodeURIComponent(p.store_slug)}">View public store ↗</a>
+      </div>
+    </section>
+    <h2 class="section__title">Overview</h2>
+    <div class="stats" id="dashboard-stats">
+      <div class="loading" style="grid-column:1/-1"><div class="spinner"></div></div>
+    </div>
+    <div class="row-between">
+      <h2 class="section__title">Recent products</h2>
+      <a class="btn btn--primary btn--small" href="#/seller/products">Manage</a>
+    </div>
+    <div id="dashboard-products"><div class="loading"><div class="spinner"></div></div></div>
+    <div class="quick-actions">
+      <a class="quick-action" href="#/seller/products/new">
+        <strong>Add a product</strong>
+        <span>List something new in your catalog</span>
+      </a>
+      <a class="quick-action" href="#/seller/activity">
+        <strong>See checkout activity</strong>
+        <span>Every WhatsApp checkout initiation</span>
+      </a>
+    </div>
+  `;
+};
+
+async function loadSellerDashboard(){
+  if (!state.profile) return;
+  const vendorId = state.profile.id;
+
+  // Stats: products count + total catalog value + store views (unknown) + checkouts
+  const [productsRes, logsRes] = await Promise.all([
+    sb.from('products').select('id, title, price, image_url, is_available, created_at').eq('vendor_id', vendorId).order('created_at', { ascending: false }),
+    sb.from('checkout_logs').select('id', { count: 'exact', head: true }).eq('vendor_id', vendorId).then(r => r, () => ({ count: 0 }))
+  ]);
+
+  const products = productsRes.data || [];
+  const catalogValue = products.reduce((s, p) => s + Number(p.price), 0);
+  const checkoutCount = logsRes.count ?? 0;
+
+  const statsEl = document.getElementById('dashboard-stats');
+  if (statsEl){
+    statsEl.innerHTML = `
+      <div class="stat"><p class="stat__label">Products</p><p class="stat__value">${products.length}</p><p class="stat__sub">${products.filter(p => p.is_available).length} in stock</p></div>
+      <div class="stat"><p class="stat__label">WhatsApp checkouts</p><p class="stat__value">${checkoutCount}</p><p class="stat__sub">initiations logged</p></div>
+      <div class="stat"><p class="stat__label">Catalog value</p><p class="stat__value" style="font-size:1.1rem">${formatNaira(catalogValue)}</p><p class="stat__sub">all listings</p></div>
+      <div class="stat"><p class="stat__label">Store views</p><p class="stat__value">—</p><p class="stat__sub">not tracked yet</p></div>
+    `;
+  }
+
+  const productsEl = document.getElementById('dashboard-products');
+  if (productsEl){
+    if (!products.length){
+      productsEl.innerHTML = `<div class="empty"><p>No products yet.</p><a class="btn btn--primary" href="#/seller/products/new">Add your first product</a></div>`;
+    } else {
+      productsEl.innerHTML = `<div class="mini-products product-grid">${products.slice(0,4).map(p => `
+        <div class="product-card-b">
+          <div class="product-card-b__img">
+            ${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="">` : '<span class="product-card-b__ph">📦</span>'}
+          </div>
+          <div class="product-card-b__body">
+            <p class="product-card-b__title">${escapeHtml(p.title)}</p>
+            <p class="product-card-b__price">${formatNaira(p.price)}</p>
+          </div>
+        </div>
+      `).join('')}</div>`;
+    }
+  }
+}
+
+VIEWS['seller-products'] = () => {
+  if (!requireSeller()) return '';
+  return `
+    <div class="row-between">
+      <h1 class="page-title" style="margin:0">Products</h1>
+      <a class="btn btn--primary btn--small" href="#/seller/products/new">+ Add product</a>
+    </div>
+    <div id="seller-products-list"><div class="loading"><div class="spinner"></div></div></div>
+    <div style="display:flex;justify-content:center;padding:16px 0">
+      <button class="btn btn--ghost" id="seller-load-more" hidden>Load more</button>
+    </div>
+  `;
+};
+
+async function loadSellerProducts(){
+  if (!state.profile) return;
+  if (state.sellerProductsLoading) return;
+  state.sellerProductsLoading = true;
+  const el = document.getElementById('seller-products-list');
+  if (!el) return;
+
+  const { data, error } = await sb.from('products')
+    .select('*').eq('vendor_id', state.profile.id)
+    .order('created_at', { ascending: false });
+
+  state.sellerProductsLoading = false;
+  state.sellerProducts = data || [];
+
+  if (error){
+    el.innerHTML = `<p style="color:var(--ring-muted)">Could not load: ${escapeHtml(error.message)}</p>`;
+    return;
+  }
+  if (!state.sellerProducts.length){
+    el.innerHTML = `<div class="empty"><p>No products yet.</p><a class="btn btn--primary" href="#/seller/products/new">Add your first product</a></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="product-list">${state.sellerProducts.map(renderSellerProduct).join('')}</div>`;
+}
+
+function renderSellerProduct(p){
+  return `
+    <article class="product-card" data-product-id="${escapeHtml(p.id)}">
+      <div class="product-card__img">
+        ${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="">` : '<span>📦</span>'}
+      </div>
+      <div>
+        <h3 class="product-card__title">${escapeHtml(p.title)}</h3>
+        <p class="product-card__meta">${escapeHtml(p.category)} · added ${relativeTime(p.created_at)}</p>
+        <p class="product-card__price">${formatNaira(p.price)}</p>
+      </div>
+      <div class="product-card__actions">
+        <label class="switch">
+          <input type="checkbox" ${p.is_available ? 'checked' : ''} data-toggle="${escapeHtml(p.id)}">
+          <span>${p.is_available ? 'Available' : 'Hidden'}</span>
+        </label>
+        <div class="product-card__btns">
+          <a class="btn btn--ghost btn--small" href="#/seller/products/${escapeHtml(p.id)}/edit">Edit</a>
+          <button class="btn btn--ghost btn--small btn--danger" data-delete-product="${escapeHtml(p.id)}">Delete</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+VIEWS['seller-product-new'] = () => {
+  if (!requireSeller()) return '';
+  state.editingProduct = null;
+  state.pendingImageBlob = null;
+  state.pendingImageExt = null;
+  state.existingImageUrl = null;
+  return renderProductForm(null);
+};
+
+VIEWS['seller-product-edit'] = ({ id }) => {
+  if (!requireSeller()) return '';
+  const p = state.sellerProducts.find(x => x.id === id) || null;
+  if (!p){
+    // Fetch it
+    sb.from('products').select('*').eq('id', id).eq('vendor_id', state.profile.id).maybeSingle().then(({data}) => {
+      if (data){ state.editingProduct = data; state.existingImageUrl = data.image_url; renderView(); }
+    });
+    return `<div class="loading"><div class="spinner"></div></div>`;
+  }
+  state.editingProduct = p;
+  state.existingImageUrl = p.image_url;
+  state.pendingImageBlob = null;
+  state.pendingImageExt = null;
+  return renderProductForm(p);
+};
+
+function renderProductForm(p){
+  return `
+    <button class="btn btn--ghost btn--small" data-back style="margin-bottom:12px">${ICONS.back} Back</button>
+    <h1 class="page-title">${p ? 'Edit product' : 'Add product'}</h1>
+    <form id="product-form" novalidate>
+      <div class="form-error hidden" id="product-form-error"></div>
+      <div class="field">
+        <label>Image (optional)</label>
+        <input id="prod-image" type="file" accept="image/*">
+        <div class="image-preview" id="prod-image-preview">
+          ${p?.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="">` : '<span>No image</span>'}
+        </div>
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input id="prod-title" type="text" maxlength="120" required value="${escapeHtml(p?.title || '')}">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Price (₦)</label>
+          <input id="prod-price" type="number" inputmode="decimal" min="0" step="50" required value="${p?.price ?? ''}">
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="prod-category" required>
+            ${CATEGORIES.map(c => `<option value="${escapeHtml(c)}" ${p?.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Description (optional)</label>
+        <textarea id="prod-description" rows="3" maxlength="2000">${escapeHtml(p?.description || '')}</textarea>
+      </div>
+      <label class="checkbox">
+        <input type="checkbox" id="prod-available" ${!p || p.is_available ? 'checked' : ''}>
+        <span>Available for order</span>
+      </label>
+      <button class="btn btn--primary btn--block" id="prod-submit" type="submit" style="margin-top:12px">
+        ${p ? 'Save changes' : 'Add product'}
+      </button>
+    </form>
+  `;
+}
+
+function wireProductForm(){
+  const form = document.getElementById('product-form');
+  if (!form) return;
+  const errEl = document.getElementById('product-form-error');
+  const imgInput = document.getElementById('prod-image');
+  const preview = document.getElementById('prod-image-preview');
+
+  if (imgInput && !imgInput.dataset.wired){
+    imgInput.dataset.wired = '1';
+    imgInput.addEventListener('change', async e => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      try {
+        const { blob, ext } = await processImage(f, { maxEdge: MAX_IMAGE_EDGE });
+        state.pendingImageBlob = blob;
+        state.pendingImageExt = ext;
+        const url = URL.createObjectURL(blob);
+        preview.innerHTML = `<img src="${url}" alt="">`;
+      } catch (err){
+        showFormError(errEl, err.message);
+        e.target.value = '';
+        state.pendingImageBlob = null;
+      }
+    });
+  }
+
+  if (form.dataset.wired) return;
+  form.dataset.wired = '1';
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    const title = document.getElementById('prod-title').value.trim();
+    const priceRaw = document.getElementById('prod-price').value.trim();
+    const category = document.getElementById('prod-category').value;
+    const description = document.getElementById('prod-description').value.trim();
+    const isAvailable = document.getElementById('prod-available').checked;
+
+    if (title.length < 2 || title.length > 120) return showFormError(errEl, 'Title must be 2–120 chars.');
+    if (!CATEGORIES.includes(category))         return showFormError(errEl, 'Pick a category.');
+    const price = Number(priceRaw);
+    if (!Number.isFinite(price) || price < 0)   return showFormError(errEl, 'Price must be 0 or more.');
+
+    const btn = document.getElementById('prod-submit');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const editing = state.editingProduct;
+      const productId = editing?.id || uuid();
+      let imageUrl = editing?.image_url || state.existingImageUrl || null;
+      let uploadedPath = null;
+
+      if (state.pendingImageBlob){
+        uploadedPath = `${state.profile.id}/${productId}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${state.pendingImageExt}`;
+        const { error: upErr } = await sb.storage.from('product-images')
+          .upload(uploadedPath, state.pendingImageBlob, { contentType: state.pendingImageBlob.type, upsert: false });
+        if (upErr) throw new Error('Image upload failed: ' + upErr.message);
+        imageUrl = sb.storage.from('product-images').getPublicUrl(uploadedPath).data.publicUrl;
+      }
+
+      const payload = {
+        title, price, category,
+        description: description || null,
+        is_available: isAvailable,
+        image_url: imageUrl
+      };
+
+      if (editing){
+        const { error } = await sb.from('products').update(payload).eq('id', editing.id).eq('vendor_id', state.profile.id);
+        if (error) throw error;
+        toast('Changes saved.', { type: 'success' });
+      } else {
+        const { error } = await sb.from('products').insert({
+          id: productId,
+          vendor_id: state.profile.id,
+          ...payload
+        });
+        if (error) throw error;
+        toast('Product added.', { type: 'success' });
+      }
+
+      state.editingProduct = null;
+      state.pendingImageBlob = null;
+      state.existingImageUrl = null;
+      go('#/seller/products');
+    } catch (err){
+      showFormError(errEl, err.message);
+      btn.disabled = false; btn.textContent = state.editingProduct ? 'Save changes' : 'Add product';
+    }
+  });
+}
+
+VIEWS['seller-store'] = () => {
+  if (!requireSeller()) return '';
+  const p = state.profile;
+  return `
+    <h1 class="page-title">My Store</h1>
+    <form id="store-form" novalidate>
+      <div class="form-error hidden" id="store-error"></div>
+      <div class="field">
+        <label>Shop name</label>
+        <input id="store-name" type="text" maxlength="60" required value="${escapeHtml(p.shop_name)}">
+      </div>
+      <div class="field">
+        <label>Store slug</label>
+        <div class="slug-wrap">
+          <span class="slug-prefix">ring.app/store/</span>
+          <input id="store-slug" type="text" maxlength="40" required value="${escapeHtml(p.store_slug)}">
+        </div>
+      </div>
+      <div class="field">
+        <label>WhatsApp number</label>
+        <input id="store-wa" type="tel" required value="${escapeHtml(p.whatsapp_number)}">
+      </div>
+      <div class="field">
+        <label>Location</label>
+        <input id="store-location" type="text" maxlength="120" value="${escapeHtml(p.location || '')}">
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="store-desc" rows="4" maxlength="500">${escapeHtml(p.description || '')}</textarea>
+      </div>
+      <div class="field">
+        <label>New logo (optional)</label>
+        <input id="store-logo" type="file" accept="image/*">
+      </div>
+      <button class="btn btn--primary btn--block" id="store-submit" type="submit">Save changes</button>
+    </form>
+    <div class="note" style="margin-top:20px">
+      Your public store: <a href="#/store/${encodeURIComponent(p.store_slug)}" style="color:var(--ring-accent);font-weight:600">View store →</a>
+    </div>
+  `;
+};
+
+function wireStoreForm(){
+  const form = document.getElementById('store-form');
+  if (!form || form.dataset.wired) return;
+  form.dataset.wired = '1';
+  const errEl = document.getElementById('store-error');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    errEl.classList.add('hidden');
+    const shop_name = document.getElementById('store-name').value.trim();
+    const store_slug = document.getElementById('store-slug').value.trim();
+    const whatsapp_number = normalizeWhatsApp(document.getElementById('store-wa').value.trim());
+    const location = document.getElementById('store-location').value.trim();
+    const description = document.getElementById('store-desc').value.trim();
+    const logoFile = document.getElementById('store-logo').files?.[0];
+
+    if (shop_name.length < 2 || shop_name.length > 60) return showFormError(errEl, 'Shop name must be 2–60 chars.');
+    if (!SLUG_RE.test(store_slug))                     return showFormError(errEl, 'Invalid slug.');
+    if (!WHATSAPP_RE.test(whatsapp_number))            return showFormError(errEl, 'Invalid WhatsApp number.');
+
+    const btn = document.getElementById('store-submit');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      let logo_url = state.profile.logo_url || null;
+      if (logoFile){
+        const { blob, ext } = await processImage(logoFile, { maxEdge: 512 });
+        const path = `${state.profile.id}/logo-${Date.now()}.${ext}`;
+        const { error: upErr } = await sb.storage.from('store-logos').upload(path, blob, { contentType: blob.type, upsert: true });
+        if (upErr) throw upErr;
+        logo_url = sb.storage.from('store-logos').getPublicUrl(path).data.publicUrl;
+      }
+      const { error } = await sb.from('profiles').update({
+        shop_name, store_slug, whatsapp_number, location: location || null, description: description || null, logo_url
+      }).eq('id', state.profile.id);
+      if (error) throw error;
+      state.profile = { ...state.profile, shop_name, store_slug, whatsapp_number, location, description, logo_url };
+      toast('Store updated.', { type: 'success' });
+      renderChrome();
+      renderView();
+    } catch (err){
+      showFormError(errEl, err.message);
+      btn.disabled = false; btn.textContent = 'Save changes';
+    }
+  });
+}
+
+VIEWS['seller-activity'] = () => {
+  if (!requireSeller()) return '';
+  return `
+    <div class="row-between">
+      <h1 class="page-title" style="margin:0">Activity</h1>
+      <button class="btn btn--ghost btn--small" id="activity-refresh">Refresh</button>
+    </div>
+    <p class="note">
+      These are WhatsApp checkout initiations — buyers who tapped through to your WhatsApp from their cart.
+      RING cannot see what happened after. Nothing here is a confirmed sale.
+    </p>
+    <div class="stats" id="activity-summary"></div>
+    <h2 class="section__title">All initiations</h2>
+    <div class="log-list" id="activity-list"><div class="loading"><div class="spinner"></div></div></div>
+    <div id="activity-empty" class="empty hidden">
+      <p>No checkout initiations yet.</p>
+      <a class="btn btn--primary" href="#/store/${encodeURIComponent(state.profile?.store_slug || '')}">View your store</a>
+    </div>
+  `;
+};
+
+async function loadSellerActivity(){
+  if (!state.profile) return;
+  const refreshBtn = document.getElementById('activity-refresh');
+  if (refreshBtn && !refreshBtn.dataset.wired){
+    refreshBtn.dataset.wired = '1';
+    refreshBtn.addEventListener('click', () => { renderView(); });
+  }
+  const listEl = document.getElementById('activity-list');
+  const emptyEl = document.getElementById('activity-empty');
+  const sumEl = document.getElementById('activity-summary');
+  if (!listEl) return;
+
+  const { data, error, count } = await sb.from('checkout_logs')
+    .select('id, order_value, item_count, items, created_at', { count: 'exact' })
+    .eq('vendor_id', state.profile.id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (error){
+    listEl.innerHTML = `<p style="color:var(--ring-muted)">Could not load activity: ${escapeHtml(error.message)}</p>`;
+    return;
+  }
+
+  const logs = data || [];
+  state.activityLogs = logs;
+
+  // Summary
+  const since30 = Date.now() - 30 * 24 * 3600 * 1000;
+  const recent = logs.filter(l => new Date(l.created_at).getTime() >= since30);
+  const recentValue = recent.reduce((s, r) => s + Number(r.order_value), 0);
+  const avg = recent.length ? recentValue / recent.length : 0;
+  sumEl.innerHTML = `
+    <div class="stat"><p class="stat__label">All-time</p><p class="stat__value">${count ?? logs.length}</p><p class="stat__sub">initiations</p></div>
+    <div class="stat"><p class="stat__label">Last 30 days</p><p class="stat__value">${recent.length}</p><p class="stat__sub">initiations</p></div>
+    <div class="stat"><p class="stat__label">30-day value</p><p class="stat__value" style="font-size:1.05rem">${formatNaira(recentValue)}</p><p class="stat__sub">cart totals</p></div>
+    <div class="stat"><p class="stat__label">Avg cart</p><p class="stat__value" style="font-size:1.05rem">${formatNaira(avg)}</p><p class="stat__sub">per initiation</p></div>
+  `;
+
+  if (!logs.length){
+    listEl.innerHTML = '';
+    emptyEl.classList.remove('hidden');
+    return;
+  }
+  emptyEl.classList.add('hidden');
+  listEl.innerHTML = logs.map(renderLogCard).join('');
+  listEl.querySelectorAll('.log-card').forEach(card => {
+    const toggle = card.querySelector('.log-card__head');
+    toggle.addEventListener('click', () => card.classList.toggle('log-card--open'));
+  });
+}
+
+function renderLogCard(log){
+  const value = Number(log.order_value);
+  const cnt = Number(log.item_count);
+  const items = Array.isArray(log.items) ? log.items : [];
+  const itemsHtml = items.map(it => {
+    const line = Number(it.price) * Number(it.quantity);
+    return `<li class="log-item">
+      <span>${escapeHtml(it.title)}</span>
+      <span class="log-item__qty">× ${Number(it.quantity)}</span>
+      <span class="log-item__line">${formatNaira(line)}</span>
+    </li>`;
+  }).join('');
+  return `
+    <article class="log-card">
+      <button class="log-card__head" type="button">
+        <div>
+          <p class="log-card__when">${escapeHtml(relativeTime(log.created_at))}</p>
+          <p class="log-card__meta">${cnt} item${cnt === 1 ? '' : 's'} · WhatsApp checkout</p>
+        </div>
+        <span class="log-card__value">${formatNaira(value)}</span>
+      </button>
+      <div class="log-card__body"><ul class="log-items">${itemsHtml}</ul></div>
+    </article>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHECKOUT / WHATSAPP HANDOFF
+   ═══════════════════════════════════════════════════════════════════ */
+
+async function sendToWhatsApp(vendorId){
+  const group = state.cart.vendors.find(v => v.vendorId === vendorId);
+  if (!group) return;
+
+  // Build message
+  const lines = group.items.map(i => `• ${i.title} × ${i.quantity} — ${formatNaira(i.price * i.quantity)}`);
+  const message =
+    `Hi ${group.vendorName}, I'd like to order:\n\n` +
+    lines.join('\n') +
+    `\n\nTotal: ${formatNaira(vendorGroupTotal(group))}\n\n` +
+    `(via RING)`;
+  sessionStorage.setItem('ring.lastMsg.' + vendorId, message);
+
+  // Log to Supabase (best-effort)
+  const payload = {
+    id: uuid(),
+    vendor_id: vendorId,
+    order_value: vendorGroupTotal(group),
+    item_count: group.items.reduce((n,i) => n + i.quantity, 0),
+    items: group.items.map(i => ({ productId: i.productId, title: i.title, price: i.price, quantity: i.quantity }))
+  };
+  sb.from('checkout_logs').insert(payload).then(() => {}, () => {});
+
+  // Remove this vendor's items from cart
+  removeVendorGroup(vendorId);
+
+  // Open WhatsApp
+  const url = `https://wa.me/${group.whatsapp}?text=${encodeURIComponent(message)}`;
+  let opened = false;
+  try { opened = !!window.open(url, '_blank', 'noopener'); } catch {}
+
+  go('#/handoff/' + encodeURIComponent(vendorId));
+  toast(opened ? 'WhatsApp opened with your order' : 'Order prepared — open WhatsApp to send');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EVENT DELEGATION
+   ═══════════════════════════════════════════════════════════════════ */
+
+document.addEventListener('click', async e => {
+  // Drawer toggling
+  if (e.target.closest('[data-drawer]')){ openDrawer(); return; }
+  if (e.target.closest('[data-drawer-close]')){ closeDrawer(); return; }
+
+  // Logout
+  if (e.target.closest('[data-action="logout"]')){ closeDrawer(); await signOut(); return; }
+
+  // Generic "go" links
+  const goLink = e.target.closest('[data-go]');
+  if (goLink){
+    closeDrawer();
+    go(goLink.dataset.go);
+    return;
+  }
+
+  // Back
+  if (e.target.closest('[data-back]')){ history.back(); return; }
+
+  // Explore category
+  const chip = e.target.closest('[data-explore-cat]');
+  if (chip){ return; } // handled in loadExplore
+
+  // Explore reset
+  if (e.target.closest('[data-explore-reset]')){
+    state.exploreQuery = '';
+    state.exploreCategory = '';
+    location.hash = '#/explore';
+    return;
+  }
+
+  // Add to cart from product page
+  // (specific handler wired after render)
+
+  // Cart quantity
+  const q = e.target.closest('[data-qty]');
+  if (q){
+    const [vendorId, productId, dir] = q.dataset.qty.split('|');
+    const group = state.cart.vendors.find(v => v.vendorId === vendorId);
+    if (group){
+      const item = group.items.find(i => i.productId === productId);
+      if (item) setQty(vendorId, productId, item.quantity + Number(dir));
+      render();
+    }
+    return;
+  }
+
+  // Remove vendor group
+  const rm = e.target.closest('[data-remove-group]');
+  if (rm){
+    if (confirm('Remove all items from this vendor?')){
+      removeVendorGroup(rm.dataset.removeGroup);
+      render();
+    }
+    return;
+  }
+
+  // Checkout
+  const ck = e.target.closest('[data-checkout]');
+  if (ck){ go('#/checkout/' + encodeURIComponent(ck.dataset.checkout)); return; }
+
+  // Send to WhatsApp
+  const send = e.target.closest('[data-send-whatsapp]');
+  if (send){ await sendToWhatsApp(send.dataset.sendWhatsapp); return; }
+
+  // Reopen WhatsApp from handoff
+  const reopen = e.target.closest('[data-reopen-wa]');
+  if (reopen){
+    const vid = reopen.dataset.reopenWa;
+    const msg = sessionStorage.getItem('ring.lastMsg.' + vid) || '';
+    // Best-effort: find the vendor's WhatsApp from a public store fetch
+    const { data } = await sb.from('profiles').select('whatsapp_number').eq('id', vid).maybeSingle();
+    if (data?.whatsapp_number){
+      window.open(`https://wa.me/${data.whatsapp_number}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    } else {
+      toast('Open WhatsApp and send the prepared message.');
+    }
+    return;
+  }
+
+  // Seller: toggle availability
+  const tgl = e.target.closest('[data-toggle]');
+  if (tgl && tgl.tagName === 'INPUT'){
+    const id = tgl.dataset.toggle;
+    const { error } = await sb.from('products').update({ is_available: tgl.checked }).eq('id', id).eq('vendor_id', state.profile.id);
+    if (error){
+      toast('Could not update: ' + error.message, { type: 'error' });
+      tgl.checked = !tgl.checked;
+    } else {
+      const p = state.sellerProducts.find(x => x.id === id);
+      if (p) p.is_available = tgl.checked;
+      toast(tgl.checked ? 'Marked available' : 'Marked hidden');
+    }
+    return;
+  }
+
+  // Seller: delete product
+  const del = e.target.closest('[data-delete-product]');
+  if (del){
+    const id = del.dataset.deleteProduct;
+    const p = state.sellerProducts.find(x => x.id === id);
+    if (!p) return;
+    if (!confirm(`Delete "${p.title}"? This cannot be undone.`)) return;
+    const { error } = await sb.from('products').delete().eq('id', id).eq('vendor_id', state.profile.id);
+    if (error){ toast('Could not delete: ' + error.message, { type: 'error' }); return; }
+    if (p.image_url){
+      const marker = '/storage/v1/object/public/product-images/';
+      const i = p.image_url.indexOf(marker);
+      if (i > -1){
+        const path = decodeURIComponent(p.image_url.slice(i + marker.length));
+        sb.storage.from('product-images').remove([path]).catch(() => {});
+      }
+    }
+    toast('Product deleted.', { type: 'success' });
+    state.sellerProducts = state.sellerProducts.filter(x => x.id !== id);
+    renderView();
+    return;
+  }
+});
+
+/* Form submit delegation */
+document.addEventListener('submit', e => {
+  const form = e.target;
+  if (form.id === 'hero-search'){
+    e.preventDefault();
+    const q = document.getElementById('hero-q').value.trim();
+    go(q ? `#/explore?q=${encodeURIComponent(q)}` : '#/explore');
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════════════════ */
+
+window.addEventListener('hashchange', render);
+
+(async function boot(){
+  loadCart();
+  await loadSession();
+
+  // If no hash, default to home
+  if (!location.hash) location.hash = '#/';
+
+  // Wire auth forms whenever the route changes to them
+  const origRender = renderView;
+  renderView = function(){
+    origRender();
+    const n = state.route.name;
+    if (n === 'login')    wireLoginForm();
+    if (n === 'register') wireRegisterForm();
+    if (n === 'seller-product-new' || n === 'seller-product-edit') wireProductForm();
+    if (n === 'seller-store') wireStoreForm();
+  };
+
+  render();
+
+  // Splash
+  setTimeout(() => {
+    const s = document.getElementById('splash');
+    if (s){
+      s.classList.add('gone');
+      setTimeout(() => s.remove(), 600);
+    }
+  }, 1400);
+})();
+</script>
+</body>
+</html>
