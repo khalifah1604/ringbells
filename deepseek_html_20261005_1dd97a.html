@@ -1,0 +1,2950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111F">
+<meta name="description" content="SHEGE BOY — your academic guy for Bellstech.">
+<title>SHEGE BOY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TOKENS
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+
+:root{
+  color-scheme:dark;
+  --bg:#07111F;
+  --bg-2:#0D1B2A;
+  --card:#12263A;
+  --blue:#1683FF;
+  --blue-bright:#3BA4FF;
+  --text:#F5F7FA;
+  --text-2:#94A3B8;
+  --success:#22C55E;
+  --warning:#F59E0B;
+  --error:#EF4444;
+  --line:rgba(148,163,184,.14);
+  --line-2:rgba(148,163,184,.28);
+  --r-xl:22px;
+  --r-lg:18px;
+  --r-md:13px;
+  --r-sm:9px;
+  --ease:cubic-bezier(.22,.8,.32,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+h1,h2,h3,h4,p{margin:0}
+a{color:var(--blue-bright)}
+:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;border-radius:8px}
+
+/* =========================================================
+   SPLASH
+   ========================================================= */
+.splash{
+  position:fixed;inset:0;z-index:400;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;text-align:center;
+  transition:opacity .42s var(--ease),visibility .42s var(--ease);
+}
+.splash.out{opacity:0;visibility:hidden;pointer-events:none}
+.splash-mark{
+  width:78px;height:78px;border-radius:24px;
+  background:linear-gradient(160deg,var(--blue),#0B5FCB);
+  display:grid;place-items:center;
+  font-weight:800;font-size:23px;letter-spacing:.5px;color:#fff;
+  box-shadow:0 14px 38px rgba(22,131,255,.34);
+  margin-bottom:26px;
+  animation:splashPop .55s var(--ease) both;
+}
+.splash-title{
+  font-size:29px;font-weight:800;letter-spacing:-.035em;
+  animation:rise .5s var(--ease) .12s both;
+}
+.splash-sub{
+  font-size:14px;color:var(--text-2);margin-top:9px;
+  animation:rise .5s var(--ease) .2s both;
+}
+.splash-loader{
+  display:flex;gap:6px;margin-top:38px;
+  animation:rise .5s var(--ease) .28s both;
+}
+.splash-loader i{
+  width:6px;height:6px;border-radius:50%;background:var(--blue);
+  animation:splashPulse 1.15s ease-in-out infinite;
+}
+.splash-loader i:nth-child(2){animation-delay:.16s}
+.splash-loader i:nth-child(3){animation-delay:.32s}
+@keyframes splashPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+@keyframes splashPop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+
+/* =========================================================
+   LAYOUT SHELL
+   ========================================================= */
+.shell{
+  min-height:100dvh;
+  max-width:520px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+  position:relative;
+}
+.sidenav{display:none}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.views{flex:1;padding:18px 16px 112px}
+.view[hidden]{display:none}
+
+@media (min-width:960px){
+  body{background:#040A13}
+  .shell{
+    max-width:1120px;
+    flex-direction:row;
+    border-left:1px solid var(--line);
+    border-right:1px solid var(--line);
+  }
+  .sidenav{
+    display:flex;
+    flex-direction:column;
+    width:258px;
+    flex-shrink:0;
+    border-right:1px solid var(--line);
+    padding:26px 18px;
+    background:var(--bg-2);
+    position:sticky;
+    top:0;
+    height:100dvh;
+  }
+  .main{flex:1}
+  .views{
+    padding:36px 40px 64px;
+    max-width:760px;
+    width:100%;
+    margin:0 auto;
+  }
+  .tabbar{display:none!important}
+}
+
+/* =========================================================
+   SIDEBAR (desktop)
+   ========================================================= */
+.brand{display:flex;align-items:center;gap:11px;padding:0 6px 26px}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(160deg,var(--blue),#0B5FCB);
+  display:grid;place-items:center;
+  font-weight:800;font-size:14px;letter-spacing:.5px;color:#fff;
+  box-shadow:0 6px 18px rgba(22,131,255,.28);
+}
+.brand-name{font-weight:700;font-size:14px;letter-spacing:.06em}
+.brand-sub{font-size:11.5px;color:var(--text-2);letter-spacing:.02em}
+.side-nav{display:flex;flex-direction:column;gap:4px}
+.side-nav button{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;border-radius:12px;
+  color:var(--text-2);font-weight:600;font-size:14px;
+  transition:background .18s var(--ease),color .18s var(--ease);
+  text-align:left;width:100%;
+}
+.side-nav button svg{width:19px;height:19px;flex-shrink:0}
+.side-nav button:hover{background:rgba(148,163,184,.07);color:var(--text)}
+.side-nav button.active{background:rgba(22,131,255,.13);color:var(--blue-bright)}
+.side-foot{margin-top:auto;padding-top:20px}
+.user-chip{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:14px;padding:12px 14px;font-size:12.5px;color:var(--text-2);line-height:1.5;
+}
+.user-chip strong{display:block;color:var(--text);font-size:13.5px;font-weight:600;margin-bottom:1px}
+.side-status{
+  display:flex;align-items:center;gap:8px;margin-top:10px;
+  font-size:11.5px;color:var(--text-2);padding:0 2px;
+}
+.side-status .led{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0}
+.side-status.off .led{background:var(--warning)}
+
+/* =========================================================
+   BOTTOM NAV (mobile)
+   ========================================================= */
+.tabbar{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;
+  width:100%;max-width:520px;z-index:60;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:4px;
+  padding:7px 10px calc(7px + env(safe-area-inset-bottom));
+  background:rgba(11,23,38,.96);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 0 6px;border-radius:13px;
+  color:var(--text-2);font-size:10.5px;font-weight:700;letter-spacing:.07em;
+  transition:color .18s var(--ease),background .18s var(--ease);
+}
+.tab svg{width:21px;height:21px}
+.tab.active{color:var(--blue-bright);background:rgba(22,131,255,.11)}
+.tab:active{transform:scale(.97)}
+
+/* =========================================================
+   TYPOGRAPHY / SHARED
+   ========================================================= */
+.sub{color:var(--text-2);font-size:13.5px}
+.section-title{
+  font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-2);margin:0 0 10px 2px;
+}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 10px}
+.section-head .section-title{margin:0}
+.page-head{margin-bottom:20px}
+.page-head h1{font-size:25px;font-weight:800;letter-spacing:-.02em}
+.page-head .sub{margin-top:3px}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:17px;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.topbar h1{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.topbar .sub{margin-top:2px}
+.icon-btn{
+  width:42px;height:42px;flex-shrink:0;border-radius:13px;
+  display:grid;place-items:center;position:relative;
+  background:var(--card);border:1px solid var(--line);color:var(--text);
+  transition:background .18s var(--ease),border-color .18s var(--ease);
+}
+.icon-btn:hover{background:#16304a;border-color:var(--line-2)}
+.icon-btn svg{width:20px;height:20px}
+.icon-btn .dot{
+  position:absolute;top:9px;right:9px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--blue-bright);
+  border:2px solid var(--card);
+  animation:pulse 2.2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+/* =========================================================
+   STATUS / OFFLINE
+   ========================================================= */
+.status-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:600;letter-spacing:.02em;
+  padding:6px 11px;border-radius:999px;
+  border:1px solid var(--line);color:var(--text-2);background:rgba(18,38,58,.6);
+  transition:border-color .18s var(--ease),color .18s var(--ease);
+}
+.status-chip svg{width:14px;height:14px}
+.status-chip .led{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.status-chip.off{color:var(--warning);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)}
+.status-chip.off .led{background:var(--warning)}
+.offline-banner{
+  display:flex;gap:10px;align-items:flex-start;
+  background:rgba(245,158,11,.08);
+  border:1px solid rgba(245,158,11,.28);
+  border-radius:var(--r-md);
+  padding:11px 13px;margin-top:12px;
+  font-size:12.5px;color:#FCD34D;line-height:1.45;
+}
+.offline-banner svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:12px 18px;border-radius:13px;
+  font-size:14px;font-weight:600;letter-spacing:.01em;
+  transition:background .18s var(--ease),border-color .18s var(--ease),transform .12s var(--ease),opacity .18s;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.98)}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#2A90FF}
+.btn-ghost{background:transparent;border:1px solid var(--line-2);color:var(--text)}
+.btn-ghost:hover{background:rgba(148,163,184,.08)}
+.btn-danger{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.32)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-sm{padding:8px 13px;font-size:12.5px;border-radius:10px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;pointer-events:none}
+.link-btn{
+  color:var(--blue-bright);font-size:13px;font-weight:600;
+  padding:4px 0;display:inline-flex;align-items:center;gap:5px;
+  transition:color .18s var(--ease);
+}
+.link-btn:hover{color:#7CC0FF}
+.link-btn.danger{color:#F87171}
+.link-btn svg{width:15px;height:15px}
+
+/* =========================================================
+   PILLS
+   ========================================================= */
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;letter-spacing:.05em;
+  padding:4px 9px;border-radius:999px;
+  background:rgba(148,163,184,.12);color:var(--text-2);
+}
+.pill-blue{background:rgba(22,131,255,.14);color:var(--blue-bright)}
+.pill-warn{background:rgba(245,158,11,.14);color:#FBBF24}
+.pill-ok{background:rgba(34,197,94,.13);color:#4ADE80}
+.pill-live{background:rgba(34,197,94,.15);color:#4ADE80}
+.pill-live::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:var(--success);
+  animation:pulse 1.6s infinite;
+}
+
+/* =========================================================
+   UP NEXT
+   ========================================================= */
+.upnext{
+  background:linear-gradient(165deg,#13293F 0%,var(--card) 62%);
+  border:1px solid rgba(22,131,255,.24);
+  position:relative;
+  overflow:hidden;
+}
+.upnext::after{
+  content:'';position:absolute;top:-70px;right:-70px;width:190px;height:190px;
+  border-radius:50%;background:radial-gradient(circle,rgba(22,131,255,.20),transparent 68%);
+  pointer-events:none;
+}
+.upnext-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.upnext-code{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.upnext-title{color:var(--text-2);font-size:13.5px;margin-top:1px}
+.meta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2)}
+.meta-item svg{width:15px;height:15px;flex-shrink:0;color:var(--blue-bright)}
+.progress-track{
+  height:5px;border-radius:999px;background:rgba(148,163,184,.16);
+  overflow:hidden;margin-top:16px;
+}
+.progress-fill{
+  height:100%;border-radius:999px;background:var(--blue);
+  transition:width .45s var(--ease);
+}
+.upnext-foot{display:flex;align-items:center;justify-content:space-between;margin-top:13px;gap:12px}
+.upnext-foot .note{font-size:12.5px;color:var(--text-2)}
+
+/* =========================================================
+   PROGRESS CARD
+   ========================================================= */
+.progress-card .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.progress-num{font-size:13.5px;color:var(--text-2)}
+.progress-pct{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--blue-bright)}
+.progress-note{font-size:13px;color:var(--text-2);margin-top:11px}
+
+/* =========================================================
+   TASK ITEMS
+   ========================================================= */
+.task-list{display:flex;flex-direction:column;gap:2px}
+.task-item{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 12px;border-radius:var(--r-md);
+  transition:background .18s var(--ease);
+}
+.task-item:hover{background:rgba(148,163,184,.05)}
+.check{
+  width:23px;height:23px;flex-shrink:0;margin-top:2px;
+  border-radius:7px;border:1.8px solid var(--line-2);
+  display:grid;place-items:center;
+  transition:background .18s var(--ease),border-color .18s var(--ease),transform .12s var(--ease);
+}
+.check svg{width:14px;height:14px;color:#fff;stroke-width:3}
+.check:hover{border-color:var(--blue-bright)}
+.check:active{transform:scale(.9)}
+.task-item.done .check{background:var(--blue);border-color:var(--blue)}
+.task-main{min-width:0;flex:1}
+.task-course{font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--blue-bright);text-transform:uppercase}
+.task-title{font-size:14.5px;font-weight:600;margin-top:2px;letter-spacing:-.01em}
+.task-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--text-2);margin-top:5px}
+.task-item.done .task-title{color:var(--text-2);text-decoration:line-through;text-decoration-color:rgba(148,163,184,.5)}
+.task-item.done .task-course{color:var(--text-2);opacity:.7}
+.priority{font-size:10px;font-weight:800;letter-spacing:.09em;padding:2px 7px;border-radius:5px}
+.priority.high{background:rgba(245,158,11,.14);color:#FBBF24}
+.priority.medium{background:rgba(22,131,255,.13);color:var(--blue-bright)}
+.priority.low{background:rgba(148,163,184,.12);color:var(--text-2)}
+.priority.overdue{background:rgba(239,68,68,.14);color:#F87171}
+
+/* =========================================================
+   DEADLINE CARD
+   ========================================================= */
+.deadline{
+  border-left:3px solid var(--warning);
+  display:flex;flex-direction:column;gap:12px;
+}
+.deadline-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.deadline h3{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.deadline .when{font-size:13px;color:var(--text-2);margin-top:5px}
+.deadline .when strong{color:#FBBF24;font-weight:600}
+
+/* =========================================================
+   AI QUICK ACTION (home)
+   ========================================================= */
+.ai-cta{
+  width:100%;text-align:left;
+  background:linear-gradient(150deg,#13293F,var(--card));
+  border:1px solid rgba(22,131,255,.24);
+  border-radius:var(--r-lg);
+  padding:15px 16px;
+  display:flex;align-items:center;gap:13px;
+  transition:border-color .2s var(--ease),transform .12s var(--ease);
+}
+.ai-cta:hover{border-color:rgba(22,131,255,.5)}
+.ai-cta:active{transform:scale(.99)}
+.ai-cta .mark{
+  width:36px;height:36px;border-radius:11px;flex-shrink:0;
+  background:rgba(22,131,255,.15);
+  display:grid;place-items:center;color:var(--blue-bright);
+}
+.ai-cta .mark svg{width:19px;height:19px}
+.ai-cta .txt{flex:1;min-width:0}
+.ai-cta .txt p{font-size:14.5px;color:var(--text-2)}
+.ai-cta .txt span{font-size:11.5px;color:#5F7186;letter-spacing:.02em}
+.ai-cta .arrow{color:var(--text-2);flex-shrink:0}
+.ai-cta .arrow svg{width:18px;height:18px}
+.suggestion-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+
+/* =========================================================
+   CHIPS
+   ========================================================= */
+.chip{
+  padding:7px 13px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(18,38,58,.7);
+  font-size:12.5px;font-weight:500;color:var(--text-2);
+  transition:all .18s var(--ease);
+}
+.chip:hover{border-color:var(--line-2);color:var(--text)}
+.chip.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.day-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:16px;scrollbar-width:none}
+.day-chips::-webkit-scrollbar{display:none}
+.day-chips .chip{flex:1;text-align:center;min-width:56px;font-size:11.5px;font-weight:700;letter-spacing:.07em}
+
+/* =========================================================
+   SEGMENTED
+   ========================================================= */
+.segmented{
+  display:flex;gap:4px;padding:4px;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:14px;margin-bottom:20px;
+}
+.seg{
+  flex:1;padding:9px 4px;border-radius:10px;
+  font-size:12.5px;font-weight:600;color:var(--text-2);
+  transition:all .18s var(--ease);text-align:center;
+}
+.seg.active{background:var(--blue);color:#fff}
+.seg:hover:not(.active){color:var(--text)}
+
+/* =========================================================
+   TIMETABLE / CLASS CARDS
+   ========================================================= */
+.class-card{
+  display:flex;gap:14px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:14px;
+  position:relative;overflow:hidden;
+}
+.class-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);
+}
+.class-card.live::before{background:var(--success)}
+.class-time{flex-shrink:0;width:70px;display:flex;flex-direction:column;gap:2px}
+.class-time .s{font-size:13.5px;font-weight:700;color:var(--text)}
+.class-time .e{font-size:11.5px;color:var(--text-2)}
+.class-body{min-width:0;flex:1}
+.class-body h3{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.class-body .course-title{font-size:12.5px;color:var(--text-2);margin-top:1px}
+.class-body .loc{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-2);margin-top:7px}
+.class-body .loc svg{width:14px;height:14px;color:var(--blue-bright);flex-shrink:0}
+.class-actions{display:flex;gap:14px;margin-top:9px}
+.stack{display:flex;flex-direction:column;gap:10px}
+
+/* =========================================================
+   STUDY SESSION
+   ========================================================= */
+.session{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-md);padding:14px;
+}
+.session .time{
+  flex-shrink:0;font-size:12.5px;font-weight:700;
+  color:var(--blue-bright);width:76px;line-height:1.4;
+}
+.session .time span{display:block;color:var(--text-2);font-weight:500}
+.session-body{min-width:0;flex:1}
+.session-body h3{font-size:14.5px;font-weight:600}
+.session-body .goal{font-size:12.5px;color:var(--text-2);margin-top:3px}
+.session-body .loc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-2);margin-top:7px}
+.session-body .loc svg{width:13px;height:13px;color:var(--blue-bright)}
+
+/* =========================================================
+   EMPTY STATES
+   ========================================================= */
+.empty{
+  border:1px dashed var(--line-2);
+  border-radius:var(--r-lg);
+  padding:26px 20px;text-align:center;
+  background:rgba(18,38,58,.35);
+}
+.empty h3{font-size:14.5px;font-weight:600;color:var(--text)}
+.empty p{font-size:13px;color:var(--text-2);margin-top:5px}
+.empty .btn{margin-top:15px}
+
+/* =========================================================
+   AI TAB
+   ========================================================= */
+.ai-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.ai-avatar{
+  width:42px;height:42px;border-radius:13px;flex-shrink:0;
+  background:linear-gradient(160deg,var(--blue),#0B5FCB);
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 18px rgba(22,131,255,.25);
+}
+.ai-avatar svg{width:21px;height:21px}
+.ai-head h1{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.ai-head .sub{font-size:13px;margin-top:1px}
+
+.chat{display:flex;flex-direction:column;gap:16px;margin-bottom:22px}
+.msg{display:flex;flex-direction:column;max-width:90%;animation:msgIn .24s var(--ease) both}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.assistant{align-self:flex-start;align-items:flex-start}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg-bubble{
+  padding:12px 15px;border-radius:17px;
+  font-size:14.5px;line-height:1.58;
+}
+.msg.assistant .msg-bubble{
+  background:var(--card);border:1px solid var(--line);
+  border-top-left-radius:6px;
+}
+.msg.user .msg-bubble{
+  background:var(--blue);color:#fff;
+  border-top-right-radius:6px;
+}
+.msg-text p{margin:0 0 9px;white-space:pre-line}
+.msg-text p:last-child{margin-bottom:0}
+.msg-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.msg-tool{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:10.5px;letter-spacing:.02em;
+  color:var(--blue-bright);
+  background:rgba(22,131,255,.08);
+  border:1px solid rgba(22,131,255,.22);
+  padding:3px 8px;border-radius:6px;
+  margin-bottom:7px;align-self:flex-start;
+}
+.typing{display:flex;gap:4px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:17px;border-top-left-radius:6px;width:fit-content}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--text-2);animation:bounce 1.3s infinite}
+.typing i:nth-child(2){animation-delay:.15s}
+.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1}}
+
+.ai-quick{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
+.ai-quick::-webkit-scrollbar{display:none}
+.ai-quick .chip{flex-shrink:0;display:inline-flex;align-items:center;gap:6px}
+.ai-quick .chip svg{width:14px;height:14px}
+
+.ai-form{
+  display:flex;gap:9px;align-items:center;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:7px 7px 7px 16px;
+  transition:border-color .2s var(--ease);
+}
+.ai-form:focus-within{border-color:rgba(22,131,255,.55)}
+.ai-form input{
+  flex:1;min-width:0;background:none;border:0;outline:none;
+  font-size:14.5px;padding:9px 0;
+}
+.ai-form input::placeholder{color:#5F7186}
+.ai-send{
+  width:38px;height:38px;border-radius:12px;flex-shrink:0;
+  background:var(--blue);color:#fff;display:grid;place-items:center;
+  transition:background .18s var(--ease),transform .12s var(--ease);
+}
+.ai-send:hover{background:#2A90FF}
+.ai-send:active{transform:scale(.94)}
+.ai-send svg{width:18px;height:18px}
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+.overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(3,8,16,.72);
+  -webkit-backdrop-filter:blur(3px);
+  backdrop-filter:blur(3px);
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:fadeIn .18s var(--ease);
+  padding:0;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media (min-width:640px){
+  .overlay{align-items:center;padding:24px}
+}
+.sheet{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:480px;
+  max-height:90dvh;overflow-y:auto;
+  padding:22px 20px calc(22px + env(safe-area-inset-bottom));
+  animation:sheetUp .24s var(--ease);
+}
+@keyframes sheetUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:640px){
+  .sheet{border-radius:22px;max-height:84dvh;padding:24px;animation:popIn .2s var(--ease)}
+  @keyframes popIn{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.sheet-head h2,.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.sheet-text{font-size:14px;color:var(--text-2);margin-top:9px;line-height:1.6}
+.sheet-actions{display:flex;gap:10px;margin-top:24px}
+.sheet-actions .btn{flex:1}
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+.form{display:flex;flex-direction:column;gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field > span{font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:.03em}
+.field input,.field select,.field textarea{
+  width:100%;
+  background:#0A1727;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:14.5px;
+  outline:none;
+  transition:border-color .18s var(--ease),background .18s var(--ease);
+  font-family:inherit;
+}
+.field textarea{resize:vertical;min-height:62px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:rgba(22,131,255,.6);
+  background:#0B1A2C;
+}
+.field input::placeholder,.field textarea::placeholder{color:#54677C}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check-row{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.check-row input{
+  width:20px;height:20px;flex-shrink:0;accent-color:var(--blue);
+  margin:0;
+}
+.check-row span{font-size:13.5px;color:var(--text)}
+
+/* =========================================================
+   TOASTS
+   ========================================================= */
+.toast-wrap{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(84px + env(safe-area-inset-bottom));
+  z-index:300;display:flex;flex-direction:column;gap:8px;
+  align-items:center;pointer-events:none;width:max-content;max-width:92vw;
+}
+@media (min-width:960px){.toast-wrap{bottom:32px}}
+.toast{
+  background:#0F2136;border:1px solid var(--line-2);
+  border-radius:12px;padding:11px 16px;
+  font-size:13px;font-weight:500;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  animation:toastIn .22s var(--ease);
+  display:flex;align-items:center;gap:9px;
+}
+.toast.out{animation:toastOut .2s var(--ease) forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
+.toast svg{width:16px;height:16px;flex-shrink:0}
+.toast.success svg{color:var(--success)}
+.toast.warn svg{color:var(--warning)}
+.toast.info svg{color:var(--blue-bright)}
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+.notif{
+  display:flex;gap:12px;padding:14px;
+  border-radius:var(--r-md);
+  background:var(--card);border:1px solid var(--line);
+}
+.notif.unread{border-color:rgba(22,131,255,.35);background:rgba(22,131,255,.06)}
+.notif-icon{
+  width:32px;height:32px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:rgba(22,131,255,.12);color:var(--blue-bright);
+}
+.notif-icon svg{width:16px;height:16px}
+.notif-body h4{font-size:13.5px;font-weight:600;line-height:1.45}
+.notif-body p{font-size:12px;color:var(--text-2);margin-top:4px}
+
+/* =========================================================
+   MISC
+   ========================================================= */
+.rise{animation:rise .26s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.d1{animation-delay:.03s}.d2{animation-delay:.06s}.d3{animation-delay:.09s}
+.d4{animation-delay:.12s}.d5{animation-delay:.15s}.d6{animation-delay:.18s}
+
+.skeleton{
+  background:linear-gradient(90deg,rgba(148,163,184,.07) 25%,rgba(148,163,184,.14) 37%,rgba(148,163,184,.07) 63%);
+  background-size:400% 100%;
+  animation:shimmer 1.4s ease infinite;
+  border-radius:10px;
+}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+.divider{height:1px;background:var(--line);margin:22px 0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.reset-row{margin-top:36px;text-align:center}
+.reset-row button{font-size:12px;color:#4A5B70;text-decoration:underline;text-underline-offset:3px}
+.reset-row button:hover{color:var(--text-2)}
+</style>
+</head>
+<body>
+
+<!-- Splash -->
+<div class="splash" id="splash">
+  <div class="splash-mark">SB</div>
+  <h1 class="splash-title">SHEGE BOY</h1>
+  <p class="splash-sub">Your academic guy for Bellstech.</p>
+  <div class="splash-loader"><i></i><i></i><i></i></div>
+</div>
+
+<!-- Main app shell -->
+<div class="shell" id="shell" hidden>
+  <aside class="sidenav" id="sidenav"></aside>
+  <div class="main">
+    <div class="views" id="views">
+      <section class="view" id="view-home" hidden></section>
+      <section class="view" id="view-ai" hidden></section>
+      <section class="view" id="view-events" hidden></section>
+    </div>
+    <nav class="tabbar" id="tabbar" aria-label="Primary"></nav>
+  </div>
+</div>
+
+<div id="overlays"></div>
+<div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+<script>
+/* =========================================================================
+   SHEGE BOY — prototype application
+   Layers:  utils → data layer → seed → tools → ai engine → render → events
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ Icons */
+const ICONS = {
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.6 12 3.4l9 7.2"/><path d="M5.4 9.4V20a1 1 0 0 0 1 1h3.4v-5.6h4.4V21h3.4a1 1 0 0 0 1-1V9.4"/></svg>`,
+  ai:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.6c0 4.3-4 7.8-9 7.8-1 0-2-.14-2.9-.4L4 21l1.3-3.9C4.1 15.8 3 13.8 3 11.6 3 7.3 7 3.8 12 3.8s9 3.5 9 7.8Z"/></svg>`,
+  calendar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`,
+  bell:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.4a6 6 0 1 0-12 0c0 6.3-2.6 8.1-2.6 8.1h17.2S18 14.7 18 8.4Z"/><path d="M13.7 20.2a2 2 0 0 1-3.4 0"/></svg>`,
+  clock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.2V12l3.2 1.9"/></svg>`,
+  pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7-5.6 7-11.3a7 7 0 1 0-14 0c0 5.7 7 11.3 7 11.3Z"/><circle cx="12" cy="10" r="2.6"/></svg>`,
+  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.2a7.6 7.6 0 0 1 15 0"/></svg>`,
+  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5.5v13M5.5 12h13"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.2 17.3 4 12.1"/></svg>`,
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`,
+  chevronRight:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 18 6-6-6-6"/></svg>`,
+  chevronLeft:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 18-6-6 6-6"/></svg>`,
+  send:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2.5 10.8 13.2"/><path d="M21.5 2.5 14.8 21.5l-4-8.3-8.3-4Z"/></svg>`,
+  cloud:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 19h10.4a4.2 4.2 0 0 0 .5-8.4 6 6 0 0 0-11.6-1.2A4.1 4.1 0 0 0 6.8 19Z"/><path d="m9.2 14.6 2 2 3.6-3.8"/></svg>`,
+  cloudOff:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 19h10.4a4.2 4.2 0 0 0 3.2-6.9"/><path d="M16.4 6.6A6 6 0 0 0 6.1 9.4 4.1 4.1 0 0 0 5 17.5"/><path d="M2.5 2.5l19 19"/></svg>`,
+  book:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.8A1.8 1.8 0 0 1 5.8 3H19v15.4H5.8A1.8 1.8 0 0 0 4 20.2Z"/><path d="M4 18.4A1.8 1.8 0 0 1 5.8 16.6H19"/></svg>`,
+  clipboard:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4.5" width="14" height="16.5" rx="2.2"/><path d="M9 4.5V3.4A1.4 1.4 0 0 1 10.4 2h3.2A1.4 1.4 0 0 1 15 3.4v1.1Z"/><path d="M9 11h6M9 15h4"/></svg>`,
+  sparkle:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 13.9 9l5.8 1.9-5.8 1.9L12 18.6l-1.9-5.8L4.3 11l5.8-2Z"/><path d="M18.6 3.2v3.4M20.3 4.9h-3.4"/></svg>`,
+  alert:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.6v5.2M12 16.2h.01"/></svg>`,
+  trash:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 6.2h16.4M9 6.2V4.4a1.4 1.4 0 0 1 1.4-1.4h3.2A1.4 1.4 0 0 1 15 4.4v1.8"/><path d="M18.4 6.2 17.5 20a1.4 1.4 0 0 1-1.4 1.3H7.9A1.4 1.4 0 0 1 6.5 20L5.6 6.2"/></svg>`,
+  edit:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5h9"/><path d="M16.6 3.4a2.2 2.2 0 0 1 3.1 3.1L7.3 18.9l-4.3 1.1 1.1-4.3Z"/></svg>`,
+  wifi:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9.2a15 15 0 0 1 19 0M5.8 12.8a10 10 0 0 1 12.4 0M9.1 16.4a5 5 0 0 1 5.8 0"/><circle cx="12" cy="20" r="1.1" fill="currentColor" stroke="none"/></svg>`
+};
+
+/* -------------------------------------------------------------- Utilities */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const uid = (prefix = 'id') => `${prefix}_${Math.random().toString(36).slice(2, 9)}${Date.now().toString(36).slice(-3)}`;
+const pad = n => String(n).padStart(2, '0');
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+const nowISO = () => new Date().toISOString();
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => (
+  { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]
+));
+
+/* --- dates --- */
+const toKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayKey = () => toKey(new Date());
+const keyToDate = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (k, n) => { const d = keyToDate(k); d.setDate(d.getDate() + n); return toKey(d); };
+const dayDiff = (a, b) => Math.round((keyToDate(b) - keyToDate(a)) / 86400000);
+
+const toMin = hhmm => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+const fromMin = total => { const t = ((total % 1440) + 1440) % 1440; return `${pad(Math.floor(t / 60))}:${pad(t % 60)}`; };
+const addMinutes = (hhmm, m) => fromMin(toMin(hhmm) + m);
+const durationMin = (s, e) => toMin(e) - toMin(s);
+
+function fmtTime(hhmm) {
+  const [h, m] = hhmm.split(':').map(Number);
+  const ap = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${pad(m)} ${ap}`;
+}
+const fmtRange = (s, e) => `${fmtTime(s)} – ${fmtTime(e)}`;
+
+const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DAY_SHORT = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+function fmtDayLabel(key) {
+  const diff = dayDiff(todayKey(), key);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  if (diff === -1) return 'Yesterday';
+  const d = keyToDate(key);
+  return `${DAY_SHORT[d.getDay()].charAt(0)}${DAY_SHORT[d.getDay()].slice(1).toLowerCase()} ${d.getDate()} ${d.toLocaleString('en-GB', { month: 'short' })}`;
+}
+
+function relTimeLabel(key, time) {
+  const diff = dayDiff(todayKey(), key);
+  if (diff === 0) return `Today · ${fmtTime(time)}`;
+  if (diff === 1) return `Tomorrow · ${fmtTime(time)}`;
+  if (diff < 0) return `Overdue · ${fmtTime(time)}`;
+  return `${fmtDayLabel(key)} · ${fmtTime(time)}`;
+}
+
+function humanCountdown(mins) {
+  if (mins <= 0) return 'now';
+  if (mins < 60) return `in ${mins} min`;
+  const h = Math.floor(mins / 60), m = mins % 60;
+  if (h < 24) return m ? `in ${h}h ${m}m` : `in ${h}h`;
+  const d = Math.floor(h / 24);
+  return `in ${d} day${d > 1 ? 's' : ''}`;
+}
+
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+/* ------------------------------------------------------------ Data layer */
+/* Swappable persistence. Replace with IndexedDB / Firestore later without
+   touching any of the UI code below. */
+const STORAGE_KEY = 'shege-boy-v2';
+
+const DataLayer = {
+  async load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      console.warn('[SHEGE BOY] load failed', err);
+      return null;
+    }
+  },
+  async save(data) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (err) {
+      console.warn('[SHEGE BOY] save failed', err);
+    }
+  },
+  async clear() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+};
+
+/* ------------------------------------------------------------------ Seed */
+function createSeed() {
+  const stamp = nowISO();
+  const t = offset => addDays(todayKey(), offset);
+
+  const courses = [
+    { id: 'crs_mce311', code: 'MCE 311', title: 'Computer Engineering',   lecturer: 'Dr. Adeyemi',  createdAt: stamp, updatedAt: stamp },
+    { id: 'crs_csc305', code: 'CSC 305', title: 'Software Engineering',    lecturer: 'Dr. Okonkwo',  createdAt: stamp, updatedAt: stamp },
+    { id: 'crs_phy301', code: 'PHY 301', title: 'Electromagnetism',        lecturer: 'Prof. Balogun',createdAt: stamp, updatedAt: stamp },
+    { id: 'crs_gst301', code: 'GST 301', title: 'Entrepreneurship',        lecturer: 'Mrs. Eze',     createdAt: stamp, updatedAt: stamp },
+    { id: 'crs_mth303', code: 'MTH 303', title: 'Numerical Analysis',      lecturer: 'Dr. Salami',   createdAt: stamp, updatedAt: stamp }
+  ];
+
+  const entry = (day, code, title, start, end, location, lecturer) => ({
+    id: uid('tt'), courseCode: code, title, day, start, end, location, lecturer,
+    repeatWeekly: true, createdAt: stamp, updatedAt: stamp
+  });
+
+  const timetable = [
+    entry(1, 'MCE 311', 'Computer Engineering', '10:00', '12:00', 'COLENG Lab',        'Dr. Adeyemi'),
+    entry(1, 'CSC 305', 'Software Engineering',  '14:00', '16:00', 'Lecture Theatre 2', 'Dr. Okonkwo'),
+    entry(2, 'MTH 303', 'Numerical Analysis',    '08:00', '10:00', 'ICT Building',      'Dr. Salami'),
+    entry(2, 'PHY 301', 'Electromagnetism',      '12:00', '14:00', 'Engineering Block', 'Prof. Balogun'),
+    entry(3, 'GST 301', 'Entrepreneurship',      '10:00', '12:00', 'Lecture Theatre 4', 'Mrs. Eze'),
+    entry(3, 'MCE 311', 'Computer Engineering',  '14:00', '16:00', 'Engineering Block', 'Dr. Adeyemi'),
+    entry(4, 'CSC 305', 'Software Engineering',  '10:00', '12:00', 'Lecture Theatre 2', 'Dr. Okonkwo'),
+    entry(4, 'PHY 301', 'Electromagnetism',      '13:00', '15:00', 'Engineering Block', 'Prof. Balogun'),
+    entry(5, 'MTH 303', 'Numerical Analysis',    '08:00', '10:00', 'Lecture Theatre 4', 'Dr. Salami'),
+    entry(5, 'MCE 311', 'Computer Engineering',  '11:00', '13:00', 'COLENG Lab',        'Dr. Adeyemi')
+  ];
+
+  const task = (title, course, dueDate, dueTime, priority, completed, description = '') => ({
+    id: uid('tsk'), title, course, description, dueDate, dueTime, priority, completed,
+    isReminder: false, createdAt: stamp, updatedAt: stamp
+  });
+
+  const tasks = [
+    task('Read MCE 311 notes',              'MCE 311', t(0),  '20:00', 'medium', true),
+    task('Complete CSC 305 assignment draft','CSC 305', t(0),  '18:00', 'high',   true),
+    task('Submit MCE 311 lab report',        'MCE 311', t(0),  '16:00', 'high',   true),
+    task('Revise PHY 301',                   'PHY 301', t(0),  '21:00', 'medium', false),
+    task('Read GST 301 handout',             'GST 301', t(0),  '22:00', 'low',    true),
+    task('CSC 305 Software Engineering Assignment', 'CSC 305', t(1), '18:00', 'high', false,
+         'Full write-up: requirements, design models and test plan. Submit on the portal.'),
+    task('MTH 303 Problem Set 4',            'MTH 303', t(2),  '12:00', 'medium', false),
+    task('GST 301 Group Presentation',       'GST 301', t(4),  '10:00', 'medium', false),
+    task('PHY 301 Lab Report',               'PHY 301', t(-2), '17:00', 'high',   true)
+  ];
+
+  const session = (course, goal, date, start, end, location) => ({
+    id: uid('ses'), course, goal, date, start, end, location, createdAt: stamp, updatedAt: stamp
+  });
+
+  const studySessions = [
+    session('MCE 311', 'Revision — Chapter 4 & 5', t(0), '19:00', '20:30', 'Library'),
+    session('CSC 305', 'Assignment write-up',      t(0), '21:00', '22:00', 'Hostel'),
+    session('PHY 301', 'Practice questions',       t(1), '17:00', '18:30', 'Library'),
+    session('MTH 303', 'Past questions',           t(2), '16:00', '17:30', 'ICT Building')
+  ];
+
+  const notif = (title, body, minutesAgo, read, type) => ({
+    id: uid('ntf'), title, body, read, type,
+    createdAt: new Date(Date.now() - minutesAgo * 60000).toISOString()
+  });
+
+  const notifications = [
+    notif('Your MCE 311 class starts in 15 minutes.', 'COLENG Lab · 10:00 AM', 6, false, 'class'),
+    notif('CSC 305 assignment is due tomorrow.', 'Due 6:00 PM · High priority', 92, false, 'task'),
+    notif('Your MCE 311 study session starts in 30 minutes.', 'Library · 7:00 PM', 240, true, 'study'),
+    notif("You're falling behind on today's tasks.", '1 of 5 still open', 400, true, 'system')
+  ];
+
+  return {
+    users: [{
+      id: 'usr_local',
+      name: 'Segun A.',
+      department: 'Computer Science',
+      level: '300 Level',
+      onboarded: true,
+      notificationsEnabled: true,
+      createdAt: stamp,
+      updatedAt: stamp
+    }],
+    courses,
+    timetable_entries: timetable,
+    tasks,
+    study_sessions: studySessions,
+    notifications,
+    sync_queue: [],
+    messages: buildInitialMessages(timetable),
+    ui: {
+      tab: 'home',
+      eventsSeg: 'timetable',
+      ttDay: pickDefaultDay(),
+      online: true,
+      booting: true
+    }
+  };
+}
+
+function pickDefaultDay() {
+  const d = new Date().getDay();
+  return d >= 1 && d <= 5 ? d : 1;
+}
+
+/* The opening AI exchange, phrased around the real next CSC 305 slot. */
+function buildInitialMessages(timetable) {
+  const now = new Date();
+  let label = 'tomorrow';
+  let timeLabel = '10:00 AM';
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + i);
+    const dow = d.getDay();
+    const slot = timetable
+      .filter(e => e.day === dow && e.courseCode === 'CSC 305')
+      .sort((a, b) => toMin(a.start) - toMin(b.start))[0];
+    if (slot) {
+      timeLabel = fmtTime(slot.start);
+      label = i === 0 ? 'today' : i === 1 ? 'tomorrow' : `on ${DAY_NAMES[dow]}`;
+      break;
+    }
+  }
+
+  return [
+    {
+      id: uid('msg'), role: 'assistant', ts: Date.now() - 120000,
+      text: "What's the matter, Shege?"
+    },
+    {
+      id: uid('msg'), role: 'user', ts: Date.now() - 90000,
+      text: "I have CSC 305 assignment due tomorrow and I haven't started."
+    },
+    {
+      id: uid('msg'), role: 'assistant', ts: Date.now() - 60000,
+      text: `You're cutting it close 😂\n\nYou have CSC 305 ${label} at ${timeLabel}, and the assignment is due by 6 PM.\n\nThere's enough room tonight to break it into two sessions. Want me to schedule them?`,
+      actions: [
+        { label: 'Schedule it', action: 'ai-schedule-csc' },
+        { label: 'Not now', action: 'ai-dismiss-csc' }
+      ]
+    }
+  ];
+}
+
+/* ------------------------------------------------------------------ State */
+let state = null;
+
+function commit() {
+  DataLayer.save(state);
+  render();
+}
+
+function currentUser() {
+  return state.users[0];
+}
+
+/* ------------------------------------------------------ Tool layer (mock) */
+/* Every mutation the app performs routes through here so the AI, the Home
+   tab and the Events tab all stay in sync from one source of truth. */
+const Tools = {
+
+  /* --- tasks --- */
+  createTask({ title, course = '', description = '', dueDate, dueTime, priority = 'medium', isReminder = false }) {
+    const task = {
+      id: uid('tsk'), title, course, description, dueDate, dueTime, priority,
+      completed: false, isReminder, createdAt: nowISO(), updatedAt: nowISO()
+    };
+    state.tasks.push(task);
+    return task;
+  },
+
+  updateTask(id, patch) {
+    const task = state.tasks.find(t => t.id === id);
+    if (!task) return null;
+    Object.assign(task, patch, { updatedAt: nowISO() });
+    return task;
+  },
+
+  deleteTask(id) {
+    const i = state.tasks.findIndex(t => t.id === id);
+    if (i === -1) return false;
+    state.tasks.splice(i, 1);
+    return true;
+  },
+
+  /* --- study sessions --- */
+  createStudySession({ course, goal = '', date, start, end, location = '' }) {
+    const s = {
+      id: uid('ses'), course, goal, date, start, end, location,
+      createdAt: nowISO(), updatedAt: nowISO()
+    };
+    state.study_sessions.push(s);
+    return s;
+  },
+
+  updateStudySession(id, patch) {
+    const s = state.study_sessions.find(x => x.id === id);
+    if (!s) return null;
+    Object.assign(s, patch, { updatedAt: nowISO() });
+    return s;
+  },
+
+  deleteStudySession(id) {
+    const i = state.study_sessions.findIndex(x => x.id === id);
+    if (i === -1) return false;
+    state.study_sessions.splice(i, 1);
+    return true;
+  },
+
+  /* --- timetable --- */
+  createTimetableEntry(data) {
+    const e = {
+      id: uid('tt'), ...data, repeatWeekly: data.repeatWeekly !== false,
+      createdAt: nowISO(), updatedAt: nowISO()
+    };
+    state.timetable_entries.push(e);
+    return e;
+  },
+
+  updateTimetableEntry(id, patch) {
+    const e = state.timetable_entries.find(x => x.id === id);
+    if (!e) return null;
+    Object.assign(e, patch, { updatedAt: nowISO() });
+    return e;
+  },
+
+  deleteTimetableEntry(id) {
+    const i = state.timetable_entries.findIndex(x => x.id === id);
+    if (i === -1) return false;
+    state.timetable_entries.splice(i, 1);
+    return true;
+  },
+
+  /* --- reads --- */
+  getTodaySchedule() {
+    return Tools.getScheduleFor(todayKey());
+  },
+
+  getScheduleFor(dateKey) {
+    const dow = keyToDate(dateKey).getDay();
+    return {
+      date: dateKey,
+      classes: state.timetable_entries
+        .filter(e => e.day === dow)
+        .sort((a, b) => toMin(a.start) - toMin(b.start)),
+      tasks: state.tasks.filter(t => !t.completed && t.dueDate === dateKey),
+      sessions: state.study_sessions
+        .filter(s => s.date === dateKey)
+        .sort((a, b) => toMin(a.start) - toMin(b.start))
+    };
+  },
+
+  getUpcomingTasks(limit = 5) {
+    return state.tasks
+      .filter(t => !t.completed)
+      .sort((a, b) => (a.dueDate + a.dueTime).localeCompare(b.dueDate + b.dueTime))
+      .slice(0, limit);
+  },
+
+  /* --- reminders (modelled as flagged tasks so the data model stays flat) --- */
+  createReminder({ title, at, date }) {
+    const task = Tools.createTask({
+      title, course: '', description: 'Reminder set by Shege AI',
+      dueDate: date, dueTime: at, priority: 'medium', isReminder: true
+    });
+    return task;
+  },
+
+  cancelReminder(id) {
+    return Tools.deleteTask(id);
+  }
+};
+
+/* --------------------------------------------------------------- AI engine */
+/* A lightweight intent parser standing in for a real LLM + function calling.
+   Every branch maps to one of the Tools above. */
+
+const STOP_WORDS = new Set(['the','a','an','my','me','to','for','and','of','on','at','is','it','i','that','this','with','due','remind']);
+
+function extractCourse(text) {
+  const m = text.match(/\b([A-Za-z]{2,4})\s?-?\s?(\d{3})\b/);
+  if (!m) return '';
+  const code = `${m[1].toUpperCase()} ${m[2]}`;
+  const found = state.courses.find(c => c.code.replace(/\s/g, '') === code.replace(/\s/g, ''));
+  return found ? found.code : code;
+}
+
+function extractTime(text) {
+  let m = text.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i);
+  if (!m) m = text.match(/\bat\s+(\d{1,2})(?::(\d{2}))?\b/i);
+  if (!m) return null;
+  let h = Number(m[1]);
+  const min = m[2] ? Number(m[2]) : 0;
+  const ap = m[3] ? m[3].toLowerCase() : null;
+  if (ap === 'pm' && h < 12) h += 12;
+  else if (ap === 'am' && h === 12) h = 0;
+  else if (!ap && h <= 7) h += 12;
+  if (h > 23 || min > 59) return null;
+  return `${pad(h)}:${pad(min)}`;
+}
+
+function extractDayOffset(text) {
+  const s = text.toLowerCase();
+  if (/\btomorrow\b/.test(s)) return 1;
+  if (/\btonight\b|\btoday\b|\bthis evening\b/.test(s)) return 0;
+
+  const map = { monday:1, tuesday:2, wednesday:3, thursday:4, friday:5, saturday:6, sunday:0 };
+  for (const [name, dow] of Object.entries(map)) {
+    if (new RegExp(`\\b${name}\\b`).test(s)) {
+      const diff = (dow - new Date().getDay() + 7) % 7;
+      return diff;
+    }
+  }
+  return null;
+}
+
+function extractDuration(text) {
+  const words = { one:60, two:120, three:180, four:240, five:300, half:30 };
+  const numMatch = text.match(/(\d+(?:\.\d+)?)\s*(hours?|hrs?|minutes?|mins?)/i);
+  if (numMatch) {
+    const v = parseFloat(numMatch[1]);
+    return /h/i.test(numMatch[2]) ? Math.round(v * 60) : Math.round(v);
+  }
+  const wordMatch = text.match(/\b(one|two|three|four|five|half)\s*(hours?|hrs?|minutes?|mins?)\b/i);
+  if (wordMatch) {
+    const base = words[wordMatch[1].toLowerCase()];
+    return /h/i.test(wordMatch[2]) ? base : Math.round(base / 60) || 30;
+  }
+  return null;
+}
+
+function cleanTitle(text) {
+  return text
+    .replace(/\bat\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)?/gi, '')
+    .replace(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b/gi, '')
+    .replace(/\b(today|tonight|tomorrow|this evening|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, '')
+    .replace(/\bdue\b/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^[,\-–\s]+|[,\-–\s]+$/g, '');
+}
+
+function capitalise(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+
+function fuzzyFind(list, query, fields) {
+  const terms = query.toLowerCase().split(/\s+/)
+    .filter(w => w.length > 2 && !STOP_WORDS.has(w));
+  let best = null, bestScore = 0;
+  for (const item of list) {
+    const hay = fields.map(f => String(item[f] || '')).join(' ').toLowerCase();
+    let score = 0;
+    for (const term of terms) if (hay.includes(term)) score++;
+    if (score > bestScore) { bestScore = score; best = item; }
+  }
+  return bestScore > 0 ? best : null;
+}
+
+function defaultStudyStart(dayOffset) {
+  if (dayOffset > 0) return '17:00';
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  if (mins < 17 * 60) return '19:00';
+  const rounded = Math.ceil((mins + 30) / 30) * 30;
+  if (rounded >= 23 * 60) return '19:00';
+  return fromMin(rounded);
+}
+
+function conflictFor({ date, start, end }, ignoreId = null) {
+  const dow = keyToDate(date).getDay();
+  const clash = state.timetable_entries.find(e =>
+    e.day === dow && e.id !== ignoreId && toMin(start) < toMin(e.end) && toMin(e.start) < toMin(end));
+  if (clash) return clash;
+
+  return state.study_sessions.find(s =>
+    s.date === date && s.id !== ignoreId && toMin(start) < toMin(s.end) && toMin(s.start) < toMin(end)) || null;
+}
+
+/* --- intent router --- */
+function aiEngine(input) {
+  const raw = input.trim();
+  const s = raw.toLowerCase();
+
+  /* --- schedule queries --- */
+  if (/\bwhat'?s next\b|\bwhats next\b|\bnext class\b|\bwhat is next\b/.test(s)) {
+    return { tool: 'getTodaySchedule()', ...aiWhatsNext() };
+  }
+
+  if (/(what|which)\s+(do i have|have i got|is on|are my)/.test(s) ||
+      /my (schedule|timetable|classes)/.test(s) ||
+      /check schedule/.test(s) ||
+      /show (my )?(schedule|timetable)/.test(s)) {
+    const offset = extractDayOffset(raw) ?? 0;
+    return { tool: 'getTodaySchedule()', ...aiSchedule(offset) };
+  }
+
+  /* --- deadlines --- */
+  if (/deadline|what'?s due|whats due|upcoming task|show.*(task|assignment)/.test(s)) {
+    return { tool: 'getUpcomingTasks()', ...aiDeadlines() };
+  }
+
+  /* --- reminders --- */
+  if (/\bremind me\b/.test(s)) {
+    return { tool: 'createReminder()', ...aiCreateReminder(raw) };
+  }
+
+  /* --- delete --- */
+  if (/^(delete|remove|cancel|clear)\b/.test(s)) {
+    return { tool: 'deleteTask() / cancelReminder()', ...aiDelete(raw) };
+  }
+
+  /* --- complete --- */
+  if (/\b(mark|tick)\b.*\b(done|complete|completed|finished)\b/.test(s) || /^i (have )?finished\b/.test(s)) {
+    return { tool: 'updateTask()', ...aiComplete(raw) };
+  }
+
+  /* --- study planning --- */
+  if (/^plan\b|\bschedule .*(study|session|revision)\b|\bstudy (block|session)\b/.test(s) || extractDuration(s) && /study|read|revise|revision/.test(s)) {
+    return { tool: 'createStudySession()', ...aiPlanStudy(raw) };
+  }
+
+  /* --- create task --- */
+  if (/^(add|create|new)\b/.test(s)) {
+    return { tool: 'createTask()', ...aiCreateTask(raw) };
+  }
+
+  /* --- fallback --- */
+  return {
+    tool: null,
+    text: "I didn't quite catch that.\n\nTry something like:\n\"Add CSC 305 assignment due tomorrow at 6 PM\"\n\"Remind me to read PHY 301 tonight at 8 PM\"\n\"What do I have tomorrow?\""
+  };
+}
+
+function aiWhatsNext() {
+  const upNext = getUpNext();
+  const deadline = getNextDeadline();
+  const parts = [];
+
+  if (upNext) {
+    const mins = Math.round((upNext.start - new Date()) / 60000);
+    parts.push(`Next up: ${upNext.entry.courseCode} — ${upNext.entry.location}, ${fmtRange(upNext.entry.start, upNext.entry.end)} (${humanCountdown(mins)}).`);
+  } else {
+    parts.push('No classes left on your timetable for today.');
+  }
+
+  if (deadline) {
+    parts.push(`Closest deadline: ${deadline.title} — ${relTimeLabel(deadline.dueDate, deadline.dueTime)}.`);
+  }
+
+  return { text: parts.join('\n\n') };
+}
+
+function aiSchedule(offset) {
+  const key = addDays(todayKey(), offset);
+  const label = offset === 0 ? 'today' : offset === 1 ? 'tomorrow' : `on ${fmtDayLabel(key)}`;
+  const { classes, tasks } = Tools.getScheduleFor(key);
+  const blocks = [];
+
+  if (classes.length) {
+    blocks.push(classes.map(c => `${fmtTime(c.start)} — ${c.courseCode} · ${c.location}`).join('\n'));
+  } else {
+    blocks.push('No classes on your timetable.');
+  }
+
+  if (tasks.length) {
+    blocks.push('Due:\n' + tasks.map(t => `${t.title} — ${fmtTime(t.dueTime)}`).join('\n'));
+  }
+
+  return { text: `Here's ${label}:\n\n${blocks.join('\n\n')}` };
+}
+
+function aiDeadlines() {
+  const upcoming = Tools.getUpcomingTasks(5);
+  if (!upcoming.length) {
+    return { text: "Nothing hanging over your head.\n\nNo assignments or deadlines in the queue." };
+  }
+  const lines = upcoming.map(t => {
+    const flag = dayDiff(todayKey(), t.dueDate) <= 0 ? ' · overdue' : '';
+    return `${t.course ? t.course + ' — ' : ''}${t.title}\n${relTimeLabel(t.dueDate, t.dueTime)}${flag}`;
+  });
+  return { text: `You've got ${upcoming.length} thing${upcoming.length > 1 ? 's' : ''} coming up:\n\n${lines.join('\n\n')}` };
+}
+
+function aiCreateReminder(raw) {
+  const body = raw.replace(/^.*?remind me(?: to)?\s*/i, '');
+  const time = extractTime(raw) || '20:00';
+  const dayOffset = extractDayOffset(raw) ?? 0;
+  const date = addDays(todayKey(), dayOffset);
+  const title = capitalise(cleanTitle(body) || 'Study session');
+  const course = extractCourse(raw);
+
+  const task = Tools.createReminder({ title, at: time, date });
+  if (course) task.course = course;
+
+  const whenLabel = dayOffset === 0 ? 'tonight' : dayOffset === 1 ? 'tomorrow' : fmtDayLabel(date);
+  return {
+    text: `Reminder set. I'll nudge you ${whenLabel} at ${fmtTime(time)} to ${title.toLowerCase()}.\n\nIt's on your task list too, so it won't slip.`
+  };
+}
+
+function aiCreateTask(raw) {
+  let body = raw.replace(/^(add|create|new)\s+(a\s+)?(new\s+)?(task\s+|assignment\s+)?/i, '');
+
+  let titlePart = body;
+  let duePart = '';
+  const split = body.split(/\bdue\b/i);
+  if (split.length > 1) {
+    titlePart = split[0];
+    duePart = split.slice(1).join(' ');
+  }
+
+  const scope = duePart || body;
+  const time = extractTime(scope) || extractTime(raw) || '18:00';
+  const dayOffset = extractDayOffset(scope) ?? extractDayOffset(raw) ?? 0;
+  const date = addDays(todayKey(), dayOffset);
+  const course = extractCourse(raw);
+  const title = capitalise(cleanTitle(titlePart) || cleanTitle(body) || 'New task');
+
+  Tools.createTask({ title, course, dueDate: date, dueTime: time, priority: 'medium' });
+
+  const when = dayOffset === 0 ? 'today' : dayOffset === 1 ? 'tomorrow' : `on ${fmtDayLabel(date)}`;
+  return {
+    text: `Added. ${course ? course + ' — ' : ''}${title}, due ${when} at ${fmtTime(time)}.\n\nI've put it on your list.`
+  };
+}
+
+function aiPlanStudy(raw) {
+  const duration = extractDuration(raw) || 90;
+  const course = extractCourse(raw) || 'General';
+  const dayOffset = extractDayOffset(raw) ?? 0;
+  const date = addDays(todayKey(), dayOffset);
+  const start = extractTime(raw) || defaultStudyStart(dayOffset);
+  const end = addMinutes(start, duration);
+  const goal = cleanTitle(raw.replace(/\bplan\b|\bfor\b/gi, '')) || 'Study session';
+  const location = /library/i.test(raw) ? 'Library' : /hostel/i.test(raw) ? 'Hostel' : 'Library';
+
+  const data = { course, goal: capitalise(goal), date, start, end, location };
+
+  const clash = conflictFor(data);
+  if (clash) {
+    const suffix = clash.courseCode
+      ? `You're already in ${clash.courseCode} from ${fmtRange(clash.start, clash.end)}.`
+      : `That overlaps your ${clash.course} session from ${fmtRange(clash.start, clash.end)}.`;
+    const suggested = addMinutes(clash.end, 30);
+    return {
+      text: `Shege, small problem 😂\n\n${suffix}\n\nMove this study block to ${fmtTime(suggested)}?`,
+      actions: [
+        { label: `Move to ${fmtTime(suggested)}`, action: 'ai-move-session', payload: { ...data, start: suggested, end: addMinutes(suggested, duration) } },
+        { label: 'Keep anyway', action: 'ai-force-session', payload: data }
+      ]
+    };
+  }
+
+  Tools.createStudySession(data);
+  return {
+    text: `Blocked. ${course} — ${fmtTime(start)} to ${fmtTime(end)} ${dayOffset === 0 ? 'tonight' : fmtDayLabel(date)}.\n\nLocation: ${location}. I'll remind you 30 minutes before.`
+  };
+}
+
+function aiDelete(raw) {
+  const query = raw.replace(/^(delete|remove|cancel|clear)\s+(my\s+)?/i, '')
+    .replace(/\b(reminder|task|assignment|study session|session)\b/gi, '')
+    .trim();
+
+  const wantsReminder = /reminder/i.test(raw);
+  const wantsSession = /study|session|reading/i.test(raw);
+
+  if (wantsSession) {
+    const hit = fuzzyFind(state.study_sessions, query, ['course', 'goal', 'location']);
+    if (hit) {
+      Tools.deleteStudySession(hit.id);
+      return { text: `Done. I removed your ${hit.course} study session (${fmtTime(hit.start)} – ${fmtTime(hit.end)}).` };
+    }
+  }
+
+  const pool = wantsReminder ? state.tasks.filter(t => t.isReminder) : state.tasks;
+  const hit = fuzzyFind(pool, query, ['title', 'course']) || fuzzyFind(state.tasks, query, ['title', 'course']);
+
+  if (hit) {
+    Tools.deleteTask(hit.id);
+    return { text: `Removed. "${hit.title}" is off your list.` };
+  }
+
+  return { text: `I couldn't find anything matching that. Run "Show deadlines" and I'll list what's on your plate.` };
+}
+
+function aiComplete(raw) {
+  const query = raw.replace(/\b(mark|tick|as|done|complete|completed|finished|i have|i've)\b/gi, '').trim();
+  const hit = fuzzyFind(state.tasks, query, ['title', 'course']);
+  if (!hit) {
+    return { text: "I couldn't match that to a task. Which one did you finish?" };
+  }
+  Tools.updateTask(hit.id, { completed: true });
+  return { text: `Nice. "${hit.title}" is marked done.\n\n${progressLine()}` };
+}
+
+function progressLine() {
+  const todays = state.tasks.filter(t => t.dueDate === todayKey());
+  const done = todays.filter(t => t.completed).length;
+  if (!todays.length) return "Nothing on today's list.";
+  if (done === todays.length) return "You're good for today.";
+  return `${done} of ${todays.length} done. ${todays.length - done} more and you're clear.`;
+}
+
+/* ------------------------------------------------------- Derived selectors */
+function getUpNext() {
+  const now = new Date();
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + i);
+    const dow = d.getDay();
+    if (dow === 0 || dow === 6) continue;
+
+    const entries = state.timetable_entries
+      .filter(e => e.day === dow)
+      .sort((a, b) => toMin(a.start) - toMin(b.start));
+
+    for (const entry of entries) {
+      const start = new Date(d); const [sh, sm] = entry.start.split(':').map(Number); start.setHours(sh, sm, 0, 0);
+      const end = new Date(d); const [eh, em] = entry.end.split(':').map(Number); end.setHours(eh, em, 0, 0);
+      if (end > now) {
+        return { entry, start, end, dayOffset: i, inProgress: start <= now && now < end };
+      }
+    }
+  }
+  return null;
+}
+
+function getNextDeadline() {
+  return state.tasks
+    .filter(t => !t.completed)
+    .sort((a, b) => (a.dueDate + a.dueTime).localeCompare(b.dueDate + b.dueTime))[0] || null;
+}
+
+function getTodayTasks() {
+  return state.tasks
+    .filter(t => t.dueDate === todayKey())
+    .sort((a, b) => {
+      if (a.completed !== b.completed) return a.completed ? 1 : -1;
+      return toMin(a.dueTime) - toMin(b.dueTime);
+    });
+}
+
+/* =========================================================================
+   RENDER — Shell (nav)
+   ========================================================================= */
+const TABS = [
+  { id: 'home',   label: 'HOME',   icon: ICONS.home },
+  { id: 'ai',     label: 'AI',     icon: ICONS.ai },
+  { id: 'events', label: 'EVENTS', icon: ICONS.calendar }
+];
+
+function initShell() {
+  const user = currentUser();
+
+  $('#sidenav').innerHTML = `
+    <div class="brand">
+      <div class="brand-mark">SB</div>
+      <div>
+        <div class="brand-name">SHEGE BOY</div>
+        <div class="brand-sub">Bellstech</div>
+      </div>
+    </div>
+    <nav class="side-nav">
+      ${TABS.map(t => `<button data-action="tab" data-tab="${t.id}">${t.icon}<span>${t.id === 'ai' ? 'Shege AI' : t.id.charAt(0).toUpperCase() + t.id.slice(1)}</span></button>`).join('')}
+    </nav>
+    <div class="side-foot">
+      <div class="user-chip">
+        <strong>${esc(user.name)}</strong>
+        ${esc(user.level)} · ${esc(user.department)}
+      </div>
+      <div class="side-status ${state.ui.online ? '' : 'off'}" id="side-status">
+        <span class="led"></span>
+        <span>${state.ui.online ? 'Synced' : 'Offline'}</span>
+      </div>
+    </div>`;
+
+  $('#tabbar').innerHTML = TABS.map(t => `
+    <button class="tab" data-action="tab" data-tab="${t.id}" aria-label="${t.label}">
+      ${t.icon}<span>${t.label}</span>
+    </button>`).join('');
+
+  mountAIView();
+}
+
+function updateNav() {
+  $$('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === state.ui.tab));
+  $$('.side-nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === state.ui.tab));
+  const s = $('#side-status');
+  if (s) {
+    s.classList.toggle('off', !state.ui.online);
+    s.querySelector('span:last-child').textContent = state.ui.online ? 'Synced' : 'Offline';
+  }
+}
+
+/* =========================================================================
+   RENDER — Home
+   ========================================================================= */
+function renderHome() {
+  const el = $('#view-home');
+  const user = currentUser();
+  const firstName = (user.name || 'Shege').split(' ')[0];
+  const unread = state.notifications.some(n => !n.read);
+
+  if (state.ui.booting) {
+    el.innerHTML = homeSkeleton();
+    return;
+  }
+
+  const upNext = getUpNext();
+  const todayTasks = getTodayTasks();
+  const doneCount = todayTasks.filter(t => t.completed).length;
+  const pct = todayTasks.length ? Math.round((doneCount / todayTasks.length) * 100) : 0;
+  const deadline = getNextDeadline();
+  const todaySessions = state.study_sessions
+    .filter(s => s.date === todayKey())
+    .sort((a, b) => toMin(a.start) - toMin(b.start));
+
+  el.innerHTML = `
+    <header class="topbar rise">
+      <div>
+        <h1>${greeting()}, ${esc(firstName)}.</h1>
+        <p class="sub">Let's get this academic thing sorted.</p>
+      </div>
+      <button class="icon-btn" data-action="open-notifications" aria-label="Notifications">
+        ${ICONS.bell}
+        ${unread ? '<span class="dot"></span>' : ''}
+      </button>
+    </header>
+
+    <div class="rise d1">
+      <button class="status-chip ${state.ui.online ? '' : 'off'}" data-action="toggle-online"
+              aria-label="Toggle connection state">
+        <span class="led"></span>
+        <span>${state.ui.online ? 'Synced' : 'Offline'}</span>
+      </button>
+    </div>
+
+    ${!state.ui.online ? `
+      <div class="offline-banner rise d1">
+        ${ICONS.cloudOff}
+        <div><strong>Offline.</strong> Changes will sync when you're back online.${
+          state.sync_queue.length ? ` <span style="opacity:.8">(${state.sync_queue.length} queued)</span>` : ''
+        }</div>
+      </div>` : ''}
+
+    ${upNext ? upNextCard(upNext) : emptyUpNext()}
+
+    <div class="card progress-card rise d3" style="margin-top:14px">
+      <div class="section-title">Today's Progress</div>
+      ${todayTasks.length ? `
+        <div class="row">
+          <span class="progress-num">${doneCount} of ${todayTasks.length} tasks completed</span>
+          <span class="progress-pct">${pct}%</span>
+        </div>
+        <div class="progress-track" style="margin-top:12px">
+          <div class="progress-fill" style="width:${pct}%"></div>
+        </div>
+        <p class="progress-note">${
+          pct === 100 ? "You're good for today." :
+          pct >= 60 ? 'One more thing and you\u2019re done for today.' :
+          'Still a few things left on the list.'
+        }</p>
+      ` : `
+        <p class="progress-note" style="margin-top:4px">Nothing on today's list yet.</p>
+      `}
+    </div>
+
+    <div class="section-head rise d4">
+      <h2 class="section-title">Today's Tasks</h2>
+      <button class="link-btn" data-action="add-task">${ICONS.plus}Add</button>
+    </div>
+    <div class="rise d4">
+      ${todayTasks.length
+        ? `<div class="task-list">${todayTasks.map(taskItem).join('')}</div>`
+        : emptyState('Nothing hanging over your head.', 'No assignments or deadlines here.', 'add-task', 'Add a task')}
+    </div>
+
+    ${deadline ? `
+      <div class="section-head rise d5"><h2 class="section-title">Upcoming Deadline</h2></div>
+      <div class="card deadline rise d5">
+        <div class="deadline-top">
+          <div>
+            <h3>${esc(deadline.title)}</h3>
+            <p class="when">Due <strong>${relDayWord(deadline.dueDate)}</strong> · ${fmtTime(deadline.dueTime)}</p>
+          </div>
+          <span class="priority ${deadline.priority}">${deadline.priority.toUpperCase()}</span>
+        </div>
+        <div>
+          <button class="btn btn-ghost btn-sm" data-action="goto-tasks">View task</button>
+        </div>
+      </div>` : ''}
+
+    ${todaySessions.length ? `
+      <div class="section-head rise d5">
+        <h2 class="section-title">Tonight's Study</h2>
+        <button class="link-btn" data-action="goto-study">All sessions</button>
+      </div>
+      <div class="stack rise d5">${todaySessions.map(sessionCard).join('')}</div>
+    ` : ''}
+
+    <div class="section-head rise d6"><h2 class="section-title">Ask Shege</h2></div>
+    <div class="rise d6">
+      <button class="ai-cta" data-action="open-ai">
+        <span class="mark">${ICONS.sparkle}</span>
+        <span class="txt">
+          <p>Ask Shege anything...</p>
+          <span>Plan your reading, set reminders, check what's next</span>
+        </span>
+        <span class="arrow">${ICONS.chevronRight}</span>
+      </button>
+      <div class="suggestion-row">
+        <button class="chip" data-action="ai-prompt" data-prompt="Plan my reading for tonight">Plan my reading</button>
+        <button class="chip" data-action="ai-prompt" data-prompt="Remind me to read PHY 301 tonight at 8 PM">Add a reminder</button>
+        <button class="chip" data-action="ai-prompt" data-prompt="What's next?">What's next?</button>
+      </div>
+    </div>
+
+    <div class="reset-row">
+      <button data-action="reset-demo">Reset demo data</button>
+    </div>
+  `;
+}
+
+function homeSkeleton() {
+  return `
+    <div class="topbar">
+      <div style="flex:1">
+        <div class="skeleton" style="height:24px;width:62%"></div>
+        <div class="skeleton" style="height:14px;width:44%;margin-top:10px"></div>
+      </div>
+      <div class="skeleton" style="height:42px;width:42px;border-radius:13px"></div>
+    </div>
+    <div class="skeleton" style="height:150px;border-radius:18px;margin-top:18px"></div>
+    <div class="skeleton" style="height:118px;border-radius:18px;margin-top:14px"></div>
+    <div class="skeleton" style="height:20px;width:130px;margin-top:26px"></div>
+    <div class="skeleton" style="height:64px;border-radius:13px;margin-top:12px"></div>
+    <div class="skeleton" style="height:64px;border-radius:13px;margin-top:8px"></div>
+  `;
+}
+
+function relDayWord(key) {
+  const d = dayDiff(todayKey(), key);
+  if (d === 0) return 'today';
+  if (d === 1) return 'tomorrow';
+  if (d === -1) return 'yesterday';
+  return fmtDayLabel(key);
+}
+
+function upNextCard({ entry, start, end, dayOffset, inProgress }) {
+  const mins = Math.round((start - new Date()) / 60000);
+  const total = (end - start) / 60000;
+  const elapsed = (new Date() - start) / 60000;
+
+  let fill;
+  if (inProgress) fill = clamp((elapsed / total) * 100, 3, 100);
+  else fill = clamp(100 - (mins / 60) * 100, 4, 100);
+
+  const badge = inProgress
+    ? `<span class="pill pill-live">IN PROGRESS</span>`
+    : `<span class="pill pill-blue">${humanCountdown(mins)}</span>`;
+
+  const dayNote = dayOffset === 0
+    ? (inProgress ? `Ends at ${fmtTime(entry.end)}` : `Starts in ${mins} min`)
+    : `${fmtDayLabel(addDays(todayKey(), dayOffset))} · ${fmtTime(entry.start)}`;
+
+  return `
+    <section class="card upnext rise d2" style="margin-top:14px">
+      <div class="section-title" style="color:var(--blue-bright)">Up Next</div>
+      <div class="upnext-head">
+        <div>
+          <div class="upnext-code">${esc(entry.courseCode)}</div>
+          <div class="upnext-title">${esc(entry.title)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="meta-row">
+        <span class="meta-item">${ICONS.clock}${fmtRange(entry.start, entry.end)}</span>
+        <span class="meta-item">${ICONS.pin}${esc(entry.location)}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${fill}%"></div></div>
+      <div class="upnext-foot">
+        <span class="note">${dayNote}</span>
+        <button class="link-btn" data-action="view-timetable">View timetable ${ICONS.chevronRight}</button>
+      </div>
+    </section>`;
+}
+
+function emptyUpNext() {
+  return `
+    <section class="card rise d2" style="margin-top:14px">
+      <div class="section-title">Up Next</div>
+      <p style="font-size:15px;font-weight:600">Your timetable is empty.</p>
+      <p class="sub" style="margin-top:6px">Add your first class and I'll keep track of what's next.</p>
+      <div style="margin-top:14px">
+        <button class="btn btn-ghost btn-sm" data-action="add-class">${ICONS.plus}Add class</button>
+      </div>
+    </section>`;
+}
+
+function taskItem(t) {
+  const overdue = !t.completed && dayDiff(todayKey(), t.dueDate) < 0;
+  return `
+    <article class="task-item ${t.completed ? 'done' : ''}">
+      <button class="check" data-action="toggle-task" data-id="${t.id}"
+              aria-pressed="${t.completed}" aria-label="Mark ${esc(t.title)} ${t.completed ? 'incomplete' : 'complete'}">
+        ${t.completed ? ICONS.check : ''}
+      </button>
+      <div class="task-main">
+        ${t.course ? `<p class="task-course">${esc(t.course)}</p>` : ''}
+        <h3 class="task-title">${esc(t.title)}</h3>
+        <p class="task-meta">
+          <span>Due ${relTimeLabel(t.dueDate, t.dueTime)}</span>
+          <span class="priority ${overdue ? 'overdue' : t.priority}">${overdue ? 'OVERDUE' : t.priority.toUpperCase()}</span>
+        </p>
+      </div>
+    </article>`;
+}
+
+function sessionCard(s) {
+  return `
+    <article class="session">
+      <div class="time">${fmtTime(s.start)}<span>${fmtTime(s.end)}</span></div>
+      <div class="session-body">
+        <h3>${esc(s.course)}${s.goal ? ' — ' + esc(s.goal) : ''}</h3>
+        ${s.location ? `<p class="loc">${ICONS.pin}${esc(s.location)}</p>` : ''}
+        <div class="class-actions">
+          <button class="link-btn" data-action="edit-study" data-id="${s.id}">Edit</button>
+          <button class="link-btn danger" data-action="delete-study" data-id="${s.id}">Delete</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function emptyState(title, body, action, label) {
+  return `
+    <div class="empty">
+      <h3>${esc(title)}</h3>
+      <p>${esc(body)}</p>
+      ${action ? `<button class="btn btn-ghost btn-sm" data-action="${action}">${ICONS.plus}${esc(label)}</button>` : ''}
+    </div>`;
+}
+
+/* =========================================================================
+   RENDER — Events
+   ========================================================================= */
+function renderEvents() {
+  const el = $('#view-events');
+  const seg = state.ui.eventsSeg;
+
+  el.innerHTML = `
+    <header class="page-head rise">
+      <h1>Academic Planner</h1>
+      <p class="sub">Your timetable, tasks and study blocks.</p>
+    </header>
+
+    <div class="segmented rise d1" role="tablist">
+      ${[['timetable','Timetable'],['tasks','Tasks'],['study','Study']].map(([id, label]) => `
+        <button role="tab" class="seg ${seg === id ? 'active' : ''}"
+                data-action="events-seg" data-seg="${id}"
+                aria-selected="${seg === id}">${label}</button>`).join('')}
+    </div>
+
+    <div class="rise d2">
+      ${seg === 'timetable' ? timetableSection() : seg === 'tasks' ? tasksSection() : studySection()}
+    </div>
+
+    <div class="reset-row"><button data-action="reset-demo">Reset demo data</button></div>
+  `;
+}
+
+function timetableSection() {
+  const days = [[1,'MON'],[2,'TUE'],[3,'WED'],[4,'THU'],[5,'FRI']];
+  const active = state.ui.ttDay;
+  const entries = state.timetable_entries
+    .filter(e => e.day === active)
+    .sort((a, b) => toMin(a.start) - toMin(b.start));
+  const total = state.timetable_entries.length;
+
+  const now = new Date();
+  const isToday = now.getDay() === active;
+
+  return `
+    <div class="day-chips">
+      ${days.map(([n, label]) => `
+        <button class="chip ${n === active ? 'active' : ''}" data-action="tt-day" data-day="${n}">${label}</button>`).join('')}
+    </div>
+
+    <div class="section-head" style="margin-top:0">
+      <h2 class="section-title">${DAY_NAMES[active]}</h2>
+      <button class="btn btn-ghost btn-sm" data-action="add-class">${ICONS.plus}Add class</button>
+    </div>
+
+    ${entries.length ? `
+      <div class="stack">
+        ${entries.map(e => classCard(e, isToday)).join('')}
+      </div>
+    ` : total === 0
+      ? emptyState('Your timetable is empty.', 'Add your first class.', 'add-class', 'Add class')
+      : emptyState(`No classes on ${DAY_NAMES[active]}.`, 'Nothing scheduled for this day.', 'add-class', 'Add class')
+    }
+  `;
+}
+
+function classCard(e, isToday) {
+  const now = new Date();
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  const live = isToday && nowMin >= toMin(e.start) && nowMin < toMin(e.end);
+
+  return `
+    <article class="class-card ${live ? 'live' : ''}">
+      <div class="class-time">
+        <span class="s">${fmtTime(e.start)}</span>
+        <span class="e">${fmtTime(e.end)}</span>
+      </div>
+      <div class="class-body">
+        <h3>${esc(e.courseCode)}${live ? ' <span class="pill pill-live" style="margin-left:6px">NOW</span>' : ''}</h3>
+        <p class="course-title">${esc(e.title || '')}</p>
+        <p class="loc">${ICONS.pin}${esc(e.location || 'No location set')}</p>
+        ${e.lecturer ? `<p class="loc">${ICONS.user}${esc(e.lecturer)}</p>` : ''}
+        <div class="class-actions">
+          <button class="link-btn" data-action="edit-class" data-id="${e.id}">Edit</button>
+          <button class="link-btn danger" data-action="delete-class" data-id="${e.id}">Delete</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function tasksSection() {
+  const tk = todayKey();
+  const open = state.tasks.filter(t => !t.completed);
+  const today = open.filter(t => t.dueDate <= tk)
+    .sort((a, b) => toMin(a.dueTime) - toMin(b.dueTime));
+  const upcoming = open.filter(t => t.dueDate > tk)
+    .sort((a, b) => (a.dueDate + a.dueTime).localeCompare(b.dueDate + b.dueTime));
+  const completed = state.tasks.filter(t => t.completed)
+    .sort((a, b) => (b.dueDate + b.dueTime).localeCompare(a.dueDate + a.dueTime));
+
+  const group = (label, list, emptyBody) => `
+    <div class="section-head"><h2 class="section-title">${label}</h2></div>
+    ${list.length
+      ? `<div class="task-list">${list.map(taskItem).join('')}</div>`
+      : `<p class="sub" style="padding:2px 12px 6px;font-size:13px">${esc(emptyBody)}</p>`}
+  `;
+
+  return `
+    <div class="section-head" style="margin-top:0">
+      <h2 class="section-title">All tasks</h2>
+      <button class="btn btn-ghost btn-sm" data-action="add-task">${ICONS.plus}Add task</button>
+    </div>
+
+    ${group('Today', today, 'Nothing due today.')}
+    ${group('Upcoming', upcoming, 'Nothing scheduled ahead.')}
+    ${group('Completed', completed, 'Nothing completed yet.')}
+
+    ${!state.tasks.length ? emptyState('Nothing hanging over your head.', 'No assignments or deadlines here.', 'add-task', 'Add a task') : ''}
+  `;
+}
+
+function studySection() {
+  const tk = todayKey();
+  const all = state.study_sessions.slice().sort((a, b) =>
+    (a.date + a.start).localeCompare(b.date + b.start));
+  const today = all.filter(s => s.date === tk);
+  const upcoming = all.filter(s => s.date > tk);
+  const past = all.filter(s => s.date < tk);
+
+  const group = (label, list) => `
+    <div class="section-head"><h2 class="section-title">${label}</h2></div>
+    ${list.length
+      ? `<div class="stack">${list.map(sessionCard).join('')}</div>`
+      : `<p class="sub" style="padding:2px 12px 6px;font-size:13px">No sessions here.</p>`}
+  `;
+
+  return `
+    <div class="section-head" style="margin-top:0">
+      <h2 class="section-title">Planned sessions</h2>
+      <button class="btn btn-ghost btn-sm" data-action="add-study">${ICONS.plus}Add session</button>
+    </div>
+
+    ${!all.length
+      ? emptyState('Your reading schedule is looking empty.', 'No study blocks planned yet.', 'add-study', 'Plan a session')
+      : `${group('Today', today)}${group('Upcoming', upcoming)}${past.length ? group('Past', past) : ''}`
+    }
+  `;
+}
+
+/* =========================================================================
+   RENDER — AI
+   ========================================================================= */
+function mountAIView() {
+  const el = $('#view-ai');
+  el.innerHTML = `
+    <div class="ai-head rise">
+      <div class="ai-avatar">${ICONS.ai}</div>
+      <div>
+        <h1>Shege AI</h1>
+        <p class="sub">Talk to your academic guy.</p>
+      </div>
+    </div>
+
+    <div class="chat" id="aiMessages"></div>
+
+    <div class="ai-quick rise d2">
+      <button class="chip" data-action="ai-quick" data-q="add-task">${ICONS.plus}Add Task</button>
+      <button class="chip" data-action="ai-quick" data-q="add-study">${ICONS.book}Plan Study Session</button>
+      <button class="chip" data-action="ai-quick" data-q="add-class">${ICONS.calendar}Add Class</button>
+      <button class="chip" data-action="ai-quick" data-q="check-schedule">${ICONS.clock}Check Schedule</button>
+      <button class="chip" data-action="ai-quick" data-q="show-deadlines">${ICONS.clipboard}Show Deadlines</button>
+    </div>
+
+    <form class="ai-form" data-action="ai-submit">
+      <label class="sr-only" for="aiInput">Message Shege AI</label>
+      <input id="aiInput" name="message" placeholder="Ask Shege anything..." autocomplete="off">
+      <button class="ai-send" type="submit" aria-label="Send">${ICONS.send}</button>
+    </form>
+  `;
+  renderAIMessages();
+}
+
+function renderAIMessages() {
+  const box = $('#aiMessages');
+  if (!box) return;
+
+  box.innerHTML = state.messages.map(m => {
+    const paragraphs = m.text.split('\n\n')
+      .map(p => `<p>${esc(p)}</p>`).join('');
+
+    const actions = (m.actions || []).map(a => `
+      <button class="btn ${a.primary === false ? 'btn-ghost' : 'btn-primary'} btn-sm"
+              data-action="${a.action}"
+              data-payload='${esc(JSON.stringify(a.payload || null))}'>${esc(a.label)}</button>`).join('');
+
+    return `
+      <div class="msg ${m.role}">
+        ${m.tool && m.role === 'assistant' ? `<span class="msg-tool">${esc(m.tool)}</span>` : ''}
+        <div class="msg-bubble">
+          <div class="msg-text">${paragraphs}</div>
+        </div>
+        ${actions ? `<div class="msg-actions">${actions}</div>` : ''}
+      </div>`;
+  }).join('') + (aiThinking ? `<div class="typing" id="aiTyping"><i></i><i></i><i></i></div>` : '');
+
+  const last = box.lastElementChild;
+  if (last && state.ui.tab === 'ai') {
+    last.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+let aiThinking = false;
+
+function pushMessage(msg) {
+  state.messages.push({ id: uid('msg'), ts: Date.now(), ...msg });
+}
+
+function sendToAI(text) {
+  if (!text.trim()) return;
+
+  pushMessage({ role: 'user', text: text.trim() });
+  renderAIMessages();
+  commit();
+
+  aiThinking = true;
+  renderAIMessages();
+
+  setTimeout(() => {
+    aiThinking = false;
+    const reply = aiEngine(text);
+    pushMessage({
+      role: 'assistant',
+      text: reply.text,
+      tool: reply.tool || null,
+      actions: reply.actions || null
+    });
+    commit();
+    renderAIMessages();
+  }, 620);
+}
+
+/* =========================================================================
+   MODALS
+   ========================================================================= */
+const modalStack = [];
+
+function openModal(html) {
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;
+  overlay.addEventListener('mousedown', e => { if (e.target === overlay) closeModal(); });
+  $('#overlays').appendChild(overlay);
+  modalStack.push(overlay);
+  document.body.style.overflow = 'hidden';
+  return overlay;
+}
+
+function closeModal() {
+  const m = modalStack.pop();
+  if (m) m.remove();
+  if (!modalStack.length) document.body.style.overflow = '';
+}
+
+function closeAllModals() {
+  while (modalStack.length) modalStack.pop().remove();
+  document.body.style.overflow = '';
+}
+
+function confirmModal({ title, message, confirmLabel = 'Delete', onConfirm }) {
+  const overlay = openModal(`
+    <h2 class="sheet-title">${esc(title)}</h2>
+    <p class="sheet-text">${esc(message)}</p>
+    <div class="sheet-actions">
+      <button class="btn btn-ghost" data-action="close-modal">Cancel</button>
+      <button class="btn btn-danger" data-action="confirm-delete">${esc(confirmLabel)}</button>
+    </div>`);
+  overlay.querySelector('[data-action="confirm-delete"]').addEventListener('click', () => {
+    closeModal();
+    onConfirm();
+  });
+}
+
+/* --- course datalist helper --- */
+function courseOptions() {
+  return `
+    <datalist id="course-codes">
+      ${state.courses.map(c => `<option value="${esc(c.code)}">${esc(c.title)}</option>`).join('')}
+      <option value="PHY 101"></option>
+      <option value="GST 101"></option>
+    </datalist>`;
+}
+
+/* --- task modal --- */
+function taskModal(task) {
+  const isEdit = !!task;
+  const t = task || {
+    title: '', course: '', description: '',
+    dueDate: todayKey(), dueTime: '18:00', priority: 'medium'
+  };
+
+  openModal(`
+    <div class="sheet-head">
+      <h2>${isEdit ? 'Edit task' : 'New task'}</h2>
+      <button class="icon-btn" data-action="close-modal" aria-label="Close">${ICONS.x}</button>
+    </div>
+    <form class="form" data-action="save-task" data-id="${isEdit ? t.id : ''}">
+      <label class="field">
+        <span>Title</span>
+        <input name="title" required value="${esc(t.title)}" placeholder="CSC 305 Software Engineering Assignment">
+      </label>
+      <label class="field">
+        <span>Course</span>
+        <input name="course" list="course-codes" value="${esc(t.course)}" placeholder="CSC 305">
+      </label>
+      <label class="field">
+        <span>Description</span>
+        <textarea name="description" rows="2" placeholder="Optional notes">${esc(t.description || '')}</textarea>
+      </label>
+      <div class="field-row">
+        <label class="field"><span>Deadline</span><input type="date" name="dueDate" required value="${t.dueDate}"></label>
+        <label class="field"><span>Time</span><input type="time" name="dueTime" required value="${t.dueTime}"></label>
+      </div>
+      <label class="field">
+        <span>Priority</span>
+        <select name="priority">
+          ${['high','medium','low'].map(p =>
+            `<option value="${p}" ${p === t.priority ? 'selected' : ''}>${p.charAt(0).toUpperCase() + p.slice(1)}</option>`).join('')}
+        </select>
+      </label>
+      <div class="sheet-actions">
+        ${isEdit ? `<button type="button" class="btn btn-danger" data-action="delete-task" data-id="${t.id}">Delete</button>` : ''}
+        <button type="submit" class="btn btn-primary">${isEdit ? 'Save changes' : 'Create task'}</button>
+      </div>
+    </form>
+    ${courseOptions()}
+  `);
+}
+
+/* --- class modal --- */
+function classModal(entry) {
+  const isEdit = !!entry;
+  const e = entry || {
+    courseCode: '', title: '', day: state.ui.ttDay || 1,
+    start: '10:00', end: '12:00', location: '', lecturer: '', repeatWeekly: true
+  };
+
+  openModal(`
+    <div class="sheet-head">
+      <h2>${isEdit ? 'Edit class' : 'Add class'}</h2>
+      <button class="icon-btn" data-action="close-modal" aria-label="Close">${ICONS.x}</button>
+    </div>
+    <form class="form" data-action="save-class" data-id="${isEdit ? e.id : ''}">
+      <div class="field-row">
+        <label class="field">
+          <span>Course code</span>
+          <input name="courseCode" required value="${esc(e.courseCode)}" placeholder="MCE 311" list="course-codes">
+        </label>
+        <label class="field">
+          <span>Course</span>
+          <input name="title" required value="${esc(e.title)}" placeholder="Computer Engineering">
+        </label>
+      </div>
+      <label class="field">
+        <span>Day</span>
+        <select name="day">
+          ${[1,2,3,4,5].map(d =>
+            `<option value="${d}" ${d === e.day ? 'selected' : ''}>${DAY_NAMES[d]}</option>`).join('')}
+        </select>
+      </label>
+      <div class="field-row">
+        <label class="field"><span>Start time</span><input type="time" name="start" required value="${e.start}"></label>
+        <label class="field"><span>End time</span><input type="time" name="end" required value="${e.end}"></label>
+      </div>
+      <label class="field">
+        <span>Location</span>
+        <input name="location" required value="${esc(e.location)}" placeholder="COLENG Lab" list="location-list">
+        <datalist id="location-list">
+          ${['COLENG Lab','Lecture Theatre 2','Lecture Theatre 4','ICT Building','Engineering Block','Library']
+            .map(l => `<option value="${l}"></option>`).join('')}
+        </datalist>
+      </label>
+      <label class="field">
+        <span>Lecturer</span>
+        <input name="lecturer" value="${esc(e.lecturer || '')}" placeholder="Dr. Adeyemi">
+      </label>
+      <label class="check-row">
+        <input type="checkbox" name="repeatWeekly" ${e.repeatWeekly !== false ? 'checked' : ''}>
+        <span>Repeat weekly</span>
+      </label>
+      <div class="sheet-actions">
+        ${isEdit ? `<button type="button" class="btn btn-danger" data-action="delete-class" data-id="${e.id}">Delete</button>` : ''}
+        <button type="submit" class="btn btn-primary">${isEdit ? 'Save changes' : 'Save class'}</button>
+      </div>
+    </form>
+    ${courseOptions()}
+  `);
+}
+
+/* --- study modal --- */
+function studyModal(session) {
+  const isEdit = !!session;
+  const s = session || {
+    course: '', goal: '', date: todayKey(),
+    start: '19:00', end: '20:30', location: 'Library'
+  };
+
+  openModal(`
+    <div class="sheet-head">
+      <h2>${isEdit ? 'Edit study session' : 'Plan study session'}</h2>
+      <button class="icon-btn" data-action="close-modal" aria-label="Close">${ICONS.x}</button>
+    </div>
+    <form class="form" data-action="save-study" data-id="${isEdit ? s.id : ''}">
+      <label class="field">
+        <span>Course</span>
+        <input name="course" required value="${esc(s.course)}" placeholder="MCE 311" list="course-codes">
+      </label>
+      <label class="field">
+        <span>Goal</span>
+        <input name="goal" value="${esc(s.goal)}" placeholder="Revision — Chapter 4 & 5">
+      </label>
+      <label class="field"><span>Date</span><input type="date" name="date" required value="${s.date}"></label>
+      <div class="field-row">
+        <label class="field"><span>Start time</span><input type="time" name="start" required value="${s.start}"></label>
+        <label class="field"><span>End time</span><input type="time" name="end" required value="${s.end}"></label>
+      </div>
+      <label class="field">
+        <span>Location</span>
+        <input name="location" value="${esc(s.location)}" placeholder="Library" list="location-list-2">
+        <datalist id="location-list-2">
+          ${['Library','Hostel','ICT Building','COLENG Lab','Lecture Theatre 2','Engineering Block']
+            .map(l => `<option value="${l}"></option>`).join('')}
+        </datalist>
+      </label>
+      <div class="sheet-actions">
+        ${isEdit ? `<button type="button" class="btn btn-danger" data-action="delete-study" data-id="${s.id}">Delete</button>` : ''}
+        <button type="submit" class="btn btn-primary">${isEdit ? 'Save changes' : 'Schedule session'}</button>
+      </div>
+    </form>
+    ${courseOptions()}
+  `);
+}
+
+/* --- conflict modal (speaks as Shege AI) --- */
+function conflictModal({ data, existingId, clash, suggestedStart, duration }) {
+  const suffix = clash.courseCode
+    ? `You're already in ${clash.courseCode} from ${fmtRange(clash.start, clash.end)}.`
+    : `That overlaps your ${clash.course} session from ${fmtRange(clash.start, clash.end)}.`;
+
+  const canMove = !conflictFor({ ...data, start: suggestedStart, end: addMinutes(suggestedStart, duration) }, existingId);
+
+  const overlay = openModal(`
+    <div class="sheet-head">
+      <h2>Shege AI</h2>
+      <button class="icon-btn" data-action="close-modal" aria-label="Close">${ICONS.x}</button>
+    </div>
+    <div class="msg assistant" style="max-width:100%">
+      <div class="msg-bubble">
+        <div class="msg-text">
+          <p>Shege, small problem 😂</p>
+          <p>${esc(suffix)}</p>
+          <p>${canMove
+            ? `Move this study session to ${fmtTime(suggestedStart)}?`
+            : `That time is tight. Keep it anyway, or pick another slot.`}</p>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      ${canMove
+        ? `<button class="btn btn-ghost" data-action="conflict-keep">Keep anyway</button>
+           <button class="btn btn-primary" data-action="conflict-move">Move to ${fmtTime(suggestedStart)}</button>`
+        : `<button class="btn btn-ghost" data-action="conflict-keep">Keep anyway</button>`}
+    </div>`);
+
+  overlay.querySelector('[data-action="conflict-move"]')?.addEventListener('click', () => {
+    closeModal();
+    saveStudySession({ ...data, start: suggestedStart, end: addMinutes(suggestedStart, duration) }, existingId, true);
+    toast('Study session scheduled.', 'success');
+    commit();
+  });
+
+  overlay.querySelector('[data-action="conflict-keep"]')?.addEventListener('click', () => {
+    closeModal();
+    saveStudySession(data, existingId, true);
+    toast('Study session scheduled.', 'success');
+    commit();
+  });
+}
+
+/* --- notifications sheet --- */
+function notificationsSheet() {
+  const list = state.notifications.slice()
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  const iconFor = type =>
+    type === 'class' ? ICONS.clock :
+    type === 'task' ? ICONS.clipboard :
+    type === 'study' ? ICONS.book : ICONS.alert;
+
+  openModal(`
+    <div class="sheet-head">
+      <h2>Notifications</h2>
+      <button class="icon-btn" data-action="close-modal" aria-label="Close">${ICONS.x}</button>
+    </div>
+    ${list.length ? `
+      <div class="stack">
+        ${list.map(n => `
+          <div class="notif ${n.read ? '' : 'unread'}">
+            <div class="notif-icon">${iconFor(n.type)}</div>
+            <div class="notif-body">
+              <h4>${esc(n.title)}</h4>
+              <p>${esc(n.body || '')} · ${timeAgo(n.createdAt)}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+    ` : emptyState('All clear.', 'Nothing new right now.', null, '')}
+  `);
+
+  state.notifications.forEach(n => { n.read = true; });
+  DataLayer.save(state);
+  setTimeout(() => { updateBellDot(); }, 0);
+}
+
+function updateBellDot() {
+  const btn = $('[data-action="open-notifications"]');
+  if (!btn) return;
+  const unread = state.notifications.some(n => !n.read);
+  const dot = btn.querySelector('.dot');
+  if (unread && !dot) {
+    btn.insertAdjacentHTML('beforeend', '<span class="dot"></span>');
+  } else if (!unread && dot) {
+    dot.remove();
+  }
+}
+
+function timeAgo(iso) {
+  const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const h = Math.floor(mins / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+/* =========================================================================
+   TOASTS
+   ========================================================================= */
+function toast(message, type = 'success') {
+  const wrap = $('#toasts');
+  const icon = type === 'warn' ? ICONS.alert : type === 'info' ? ICONS.bell : ICONS.check;
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `${icon}<span>${esc(message)}</span>`;
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 220);
+  }, 2400);
+}
+
+/* =========================================================================
+   MUTATIONS
+   ========================================================================= */
+function mutate(description, fn) {
+  fn();
+  if (!state.ui.online) {
+    state.sync_queue.push({ id: uid('sq'), description, createdAt: nowISO() });
+  }
+  commit();
+}
+
+function saveStudySession(data, existingId, skipConflictCheck = false) {
+  if (!skipConflictCheck) {
+    const clash = conflictFor(data, existingId);
+    if (clash) {
+      const duration = Math.max(durationMin(data.start, data.end), 30);
+      conflictModal({
+        data, existingId, clash,
+        suggestedStart: addMinutes(clash.end, 30),
+        duration
+      });
+      return false;
+    }
+  }
+
+  if (existingId) {
+    Tools.updateStudySession(existingId, data);
+  } else {
+    Tools.createStudySession(data);
+  }
+  return true;
+}
+
+function flushSyncQueue() {
+  if (!state.sync_queue.length) return;
+  const count = state.sync_queue.length;
+  state.sync_queue = [];
+  toast(`Synced ${count} change${count > 1 ? 's' : ''}.`, 'info');
+}
+
+/* =========================================================================
+   RENDER — root
+   ========================================================================= */
+function render() {
+  const shell = $('#shell');
+  shell.hidden = false;
+
+  updateNav();
+
+  ['home', 'ai', 'events'].forEach(t => {
+    const v = $(`#view-${t}`);
+    if (v) v.hidden = t !== state.ui.tab;
+  });
+
+  if (state.ui.tab === 'home') renderHome();
+  if (state.ui.tab === 'events') renderEvents();
+  if (state.ui.tab === 'ai') renderAIMessages();
+}
+
+function setTab(tab) {
+  state.ui.tab = tab;
+  DataLayer.save(state);
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* =========================================================================
+   EVENT DELEGATION
+   ========================================================================= */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+
+  const action = el.dataset.action;
+  const id = el.dataset.id;
+
+  switch (action) {
+
+    /* ---------------- navigation ---------------- */
+    case 'tab':
+      setTab(el.dataset.tab);
+      break;
+
+    case 'open-ai':
+      setTab('ai');
+      setTimeout(() => $('#aiInput')?.focus(), 120);
+      break;
+
+    case 'view-timetable':
+      state.ui.eventsSeg = 'timetable';
+      setTab('events');
+      break;
+
+    case 'goto-tasks':
+      state.ui.eventsSeg = 'tasks';
+      setTab('events');
+      break;
+
+    case 'goto-study':
+      state.ui.eventsSeg = 'study';
+      setTab('events');
+      break;
+
+    case 'events-seg':
+      state.ui.eventsSeg = el.dataset.seg;
+      commit();
+      break;
+
+    case 'tt-day':
+      state.ui.ttDay = Number(el.dataset.day);
+      commit();
+      break;
+
+    /* ---------------- connection ---------------- */
+    case 'toggle-online': {
+      state.ui.online = !state.ui.online;
+      if (state.ui.online) {
+        flushSyncQueue();
+      } else {
+        toast('Offline — changes will sync later.', 'warn');
+      }
+      commit();
+      break;
+    }
+
+    /* ---------------- notifications ---------------- */
+    case 'open-notifications':
+      notificationsSheet();
+      break;
+
+    /* ---------------- tasks ---------------- */
+    case 'toggle-task': {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) break;
+      Tools.updateTask(id, { completed: !t.completed });
+      if (!state.ui.online) {
+        state.sync_queue.push({ id: uid('sq'), description: 'task update', createdAt: nowISO() });
+      }
+      commit();
+      break;
+    }
+
+    case 'add-task':
+      taskModal(null);
+      break;
+
+    case 'edit-task': {
+      const t = state.tasks.find(x => x.id === id);
+      if (t) taskModal(t);
+      break;
+    }
+
+    case 'delete-task': {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) break;
+      closeAllModals();
+      confirmModal({
+        title: 'Delete this task?',
+        message: `"${t.title}" will be removed from your planner.`,
+        onConfirm: () => mutate('delete task', () => {
+          Tools.deleteTask(id);
+          toast('Task deleted.', 'success');
+        })
+      });
+      break;
+    }
+
+    /* ---------------- classes ---------------- */
+    case 'add-class':
+      classModal(null);
+      break;
+
+    case 'edit-class': {
+      const c = state.timetable_entries.find(x => x.id === id);
+      if (c) classModal(c);
+      break;
+    }
+
+    case 'delete-class': {
+      const c = state.timetable_entries.find(x => x.id === id);
+      if (!c) break;
+      closeAllModals();
+      confirmModal({
+        title: 'Delete this class?',
+        message: `${c.courseCode} on ${DAY_NAMES[c.day]} at ${fmtTime(c.start)} will be removed from your timetable.`,
+        onConfirm: () => mutate('delete class', () => {
+          Tools.deleteTimetableEntry(id);
+          toast('Class removed.', 'success');
+        })
+      });
+      break;
+    }
+
+    /* ---------------- study sessions ---------------- */
+    case 'add-study':
+      studyModal(null);
+      break;
+
+    case 'edit-study': {
+      const s = state.study_sessions.find(x => x.id === id);
+      if (s) studyModal(s);
+      break;
+    }
+
+    case 'delete-study': {
+      const s = state.study_sessions.find(x => x.id === id);
+      if (!s) break;
+      closeAllModals();
+      confirmModal({
+        title: 'Delete this study session?',
+        message: `${s.course} — ${fmtTime(s.start)} to ${fmtTime(s.end)} will be removed.`,
+        onConfirm: () => mutate('delete study session', () => {
+          Tools.deleteStudySession(id);
+          toast('Study session deleted.', 'success');
+        })
+      });
+      break;
+    }
+
+    /* ---------------- modals ---------------- */
+    case 'close-modal':
+      closeModal();
+      break;
+
+    /* ---------------- AI ---------------- */
+    case 'ai-quick': {
+      const q = el.dataset.q;
+      if (q === 'add-task') { taskModal(null); break; }
+      if (q === 'add-study') { studyModal(null); break; }
+      if (q === 'add-class') { classModal(null); break; }
+      if (q === 'check-schedule') { sendToAI("What do I have today?"); break; }
+      if (q === 'show-deadlines') { sendToAI("Show my deadlines"); break; }
+      break;
+    }
+
+    case 'ai-prompt':
+      setTab('ai');
+      setTimeout(() => sendToAI(el.dataset.prompt), 160);
+      break;
+
+    case 'ai-schedule-csc': {
+      const start1 = defaultStudyStart(0);
+      const data1 = { course: 'CSC 305', goal: 'Assignment — part 1', date: todayKey(), start: start1, end: addMinutes(start1, 60), location: 'Hostel' };
+      const data2 = { course: 'CSC 305', goal: 'Assignment — part 2', date: todayKey(), start: addMinutes(start1, 90), end: addMinutes(start1, 150), location: 'Hostel' };
+
+      mutate('create study sessions', () => {
+        Tools.createStudySession(data1);
+        Tools.createStudySession(data2);
+      });
+
+      pushMessage({
+        role: 'assistant',
+        tool: 'createStudySession() ×2',
+        text: `Locked in.\n\n${fmtTime(data1.start)} – ${fmtTime(data1.end)} · Assignment part 1\n${fmtTime(data2.start)} – ${fmtTime(data2.end)} · Assignment part 2\n\nBoth at the hostel. I'll remind you 30 minutes before each one.`
+      });
+      commit();
+      renderAIMessages();
+      toast('Study sessions scheduled.', 'success');
+      break;
+    }
+
+    case 'ai-dismiss-csc':
+      pushMessage({
+        role: 'assistant',
+        text: "Understood. Just don't leave it for tomorrow morning — that 6 PM deadline is real."
+      });
+      commit();
+      renderAIMessages();
+      break;
+
+    case 'ai-move-session': {
+      const payload = JSON.parse(el.dataset.payload);
+      mutate('create study session', () => { Tools.createStudySession(payload); });
+      pushMessage({
+        role: 'assistant',
+        tool: 'createStudySession()',
+        text: `Moved. ${payload.course}, ${fmtTime(payload.start)} – ${fmtTime(payload.end)}. No more clash.`
+      });
+      commit();
+      renderAIMessages();
+      toast('Study session scheduled.', 'success');
+      break;
+    }
+
+    case 'ai-force-session': {
+      const payload = JSON.parse(el.dataset.payload);
+      mutate('create study session', () => { Tools.createStudySession(payload); });
+      pushMessage({
+        role: 'assistant',
+        tool: 'createStudySession()',
+        text: `Fine, kept it as is — ${fmtTime(payload.start)} to ${fmtTime(payload.end)}. Just know you'll be double-booked.`
+      });
+      commit();
+      renderAIMessages();
+      break;
+    }
+
+    /* ---------------- demo reset ---------------- */
+    case 'reset-demo':
+      confirmModal({
+        title: 'Reset demo data?',
+        message: 'This clears everything and restores the original Bellstech sample data.',
+        confirmLabel: 'Reset',
+        onConfirm: async () => {
+          await DataLayer.clear();
+          state = createSeed();
+          state.ui.booting = false;
+          initShell();
+          commit();
+          toast('Demo data restored.', 'info');
+        }
+      });
+      break;
+  }
+});
+
+/* --- form submissions --- */
+document.addEventListener('submit', e => {
+  const form = e.target.closest('form[data-action]');
+  if (!form) return;
+  e.preventDefault();
+
+  const action = form.dataset.action;
+  const id = form.dataset.id;
+  const fd = new FormData(form);
+
+  /* task */
+  if (action === 'save-task') {
+    const payload = {
+      title: (fd.get('title') || '').toString().trim(),
+      course: (fd.get('course') || '').toString().trim(),
+      description: (fd.get('description') || '').toString().trim(),
+      dueDate: (fd.get('dueDate') || todayKey()).toString(),
+      dueTime: (fd.get('dueTime') || '18:00').toString(),
+      priority: (fd.get('priority') || 'medium').toString()
+    };
+
+    closeModal();
+    mutate('save task', () => {
+      if (id) {
+        Tools.updateTask(id, payload);
+        toast('Task updated.', 'success');
+      } else {
+        Tools.createTask(payload);
+        toast('Assignment created.', 'success');
+      }
+    });
+    return;
+  }
+
+  /* class */
+  if (action === 'save-class') {
+    const start = (fd.get('start') || '10:00').toString();
+    const end = (fd.get('end') || '12:00').toString();
+
+    if (toMin(end) <= toMin(start)) {
+      toast('End time must be after start time.', 'warn');
+      return;
+    }
+
+    const payload = {
+      courseCode: (fd.get('courseCode') || '').toString().trim().toUpperCase(),
+      title: (fd.get('title') || '').toString().trim(),
+      day: Number(fd.get('day')),
+      start, end,
+      location: (fd.get('location') || '').toString().trim(),
+      lecturer: (fd.get('lecturer') || '').toString().trim(),
+      repeatWeekly: fd.get('repeatWeekly') === 'on'
+    };
+
+    closeModal();
+    mutate('save class', () => {
+      if (id) {
+        Tools.updateTimetableEntry(id, payload);
+        toast('Class updated.', 'success');
+      } else {
+        Tools.createTimetableEntry(payload);
+        state.ui.ttDay = payload.day;
+        toast('Class added.', 'success');
+      }
+    });
+    return;
+  }
+
+  /* study session */
+  if (action === 'save-study') {
+    const start = (fd.get('start') || '19:00').toString();
+    const end = (fd.get('end') || '20:30').toString();
+
+    if (toMin(end) <= toMin(start)) {
+      toast('End time must be after start time.', 'warn');
+      return;
+    }
+
+    const payload = {
+      course: (fd.get('course') || '').toString().trim().toUpperCase(),
+      goal: (fd.get('goal') || '').toString().trim(),
+      date: (fd.get('date') || todayKey()).toString(),
+      start, end,
+      location: (fd.get('location') || '').toString().trim()
+    };
+
+    closeModal();
+
+    const ok = saveStudySession(payload, id || null);
+    if (ok) {
+      toast(id ? 'Study session updated.' : 'Study session scheduled.', 'success');
+      commit();
+    }
+    return;
+  }
+});
+
+/* --- AI input --- */
+document.addEventListener('submit', e => {
+  const form = e.target.closest('form[data-action="ai-submit"]');
+  if (!form) return;
+  e.preventDefault();
+  const input = form.querySelector('input[name="message"]');
+  const text = input.value;
+  input.value = '';
+  sendToAI(text);
+});
+
+/* =========================================================================
+   PWA — manifest + service worker
+   ========================================================================= */
+const APP_ICON = `data:image/svg+xml,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#07111F"/>
+  <path d="M168 330c0-96 196-56 196-152 0-52-48-78-110-78-54 0-96 20-110 60"
+        stroke="#1683FF" stroke-width="46" fill="none" stroke-linecap="round"/>
+  <circle cx="352" cy="368" r="40" fill="#3BA4FF"/>
+</svg>`)}`;
+
+function installManifest() {
+  const manifest = {
+    name: 'SHEGE BOY',
+    short_name: 'Shege Boy',
+    description: 'Your academic guy for Bellstech.',
+    start_url: '.',
+    scope: '.',
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#07111F',
+    theme_color: '#07111F',
+    icons: [
+      { src: APP_ICON, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
+      { src: APP_ICON, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+    ]
+  };
+
+  try {
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  } catch (err) {
+    console.info('[SHEGE BOY] Manifest injection skipped.');
+  }
+}
+
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+
+  /* Offline shell. In a real deployment this ships as /sw.js next to
+     index.html; the inline registration below only works in secure,
+     same-origin contexts. */
+  const swSource = `
+    const CACHE = 'shege-boy-shell-v2';
+    const SHELL = ['./', './index.html'];
+
+    self.addEventListener('install', event => {
+      event.waitUntil(
+        caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
+      );
+    });
+
+    self.addEventListener('activate', event => {
+      event.waitUntil(
+        caches.keys()
+          .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+          .then(() => self.clients.claim())
+      );
+    });
+
+    self.addEventListener('fetch', event => {
+      if (event.request.method !== 'GET') return;
+      event.respondWith(
+        caches.match(event.request).then(hit => {
+          const network = fetch(event.request)
+            .then(res => {
+              const copy = res.clone();
+              caches.open(CACHE).then(c => c.put(event.request, copy)).catch(() => {});
+              return res;
+            })
+            .catch(() => hit || caches.match('./index.html'));
+          return hit || network;
+        })
+      );
+    });
+  `;
+
+  window.addEventListener('load', async () => {
+    try {
+      const blob = new Blob([swSource], { type: 'text/javascript' });
+      await navigator.serviceWorker.register(URL.createObjectURL(blob));
+      console.info('[SHEGE BOY] Offline shell registered.');
+    } catch (err) {
+      console.info('[SHEGE BOY] Service worker not registered in this environment. Deploy sw.js alongside index.html for full offline support.');
+    }
+  });
+}
+
+/* =========================================================================
+   BOOT
+   ========================================================================= */
+async function boot() {
+  installManifest();
+  registerServiceWorker();
+
+  const saved = await DataLayer.load();
+
+  if (saved && saved.users && saved.users.length) {
+    state = saved;
+    /* merge in any new UI defaults added since the last session */
+    state.ui = Object.assign(
+      { tab: 'home', eventsSeg: 'timetable', ttDay: pickDefaultDay(), online: true, booting: true },
+      state.ui || {}
+    );
+    if (!Array.isArray(state.messages) || !state.messages.length) {
+      state.messages = buildInitialMessages(state.timetable_entries);
+    }
+    if (!Array.isArray(state.sync_queue)) state.sync_queue = [];
+    /* v2 always boots straight into Home */
+    state.ui.tab = 'home';
+    state.ui.booting = true;
+  } else {
+    state = createSeed();
+  }
+
+  /* Guarantee the local user is treated as ready — no onboarding step. */
+  if (state.users[0]) {
+    state.users[0].onboarded = true;
+  }
+
+  initShell();
+  render();
+
+  /* Splash → shell transition. */
+  const splash = $('#splash');
+  const SPLASH_MS = 1150;
+
+  setTimeout(() => {
+    if (splash) {
+      splash.classList.add('out');
+      setTimeout(() => splash.remove(), 460);
+    }
+    state.ui.booting = false;
+    render();
+  }, SPLASH_MS);
+}
+
+boot();
+</script>
+</body>
+</html>
